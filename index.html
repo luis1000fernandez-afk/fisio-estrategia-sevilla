@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FisioEstrategia Sevilla 2026</title>
+    <link rel="manifest" href="./manifest.json">
+    <link rel="stylesheet" href="./style.css">
+    <meta name="theme-color" content="#0E7A8A">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="app-header">
+        <h1>🧭 FisioEstrategia</h1>
+        <p>Sevilla 2026</p>
+    </header>
+
+    <main class="app-container">
+        <!-- Onboarding -->
+        <section class="onboarding-card">
+            <h2>Tu Brújula de Decisión Clínica</h2>
+            <p>Abrir a ciegas es la forma más rápida de perder dinero. Ajusta los filtros para encontrar tu <b>océano azul</b> (🟢) y entra en la ficha para calcular tu Break-Even.</p>
+        </section>
+
+        <!-- Filters -->
+        <section class="filters-section">
+            <div class="filter-group">
+                <label for="renta-slider">Renta Mínima: <span id="renta-value">20.000 €</span></label>
+                <input type="range" id="renta-slider" min="20000" max="40000" step="1000" value="20000">
+            </div>
+            <div class="filter-group">
+                <label for="poblacion-slider">Población Mínima: <span id="poblacion-value">20.000 hab.</span></label>
+                <input type="range" id="poblacion-slider" min="20000" max="150000" step="5000" value="20000">
+            </div>
+        </section>
+
+        <!-- Results Grid -->
+        <section class="results-grid" id="results-grid">
+            <!-- Cards will be injected here by JS -->
+        </section>
+    </main>
+
+    <!-- Modal Detail View -->
+    <div id="detail-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button id="close-modal" class="close-btn">&times;</button>
+            <div id="modal-body">
+                <!-- Data injected here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="./app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js')
+            .then(() => console.log('Service Worker Registrado'));
+        }
+    </script>
+</body>
+</html>
