@@ -396,7 +396,6 @@ function renderGrid() {
     const minRenta = parseInt(rentaSlider.value);
     const minPob = parseInt(pobSlider.value);
 
-    // Apply filters
     const filtered = data.filter(d => d.renta >= minRenta && d.poblacion >= minPob);
 
     filtered.forEach(pueblo => {
@@ -435,7 +434,6 @@ function renderGrid() {
 
 // Modal Logic & Break Even Calculator
 function openModal(pueblo) {
-    // Generate HTML for details
     let fase2Html = '';
     if (pueblo.fase2) {
         fase2Html = `
@@ -494,12 +492,11 @@ function openModal(pueblo) {
         </div>
 
         <div class="btn-group">
-            <a href="https://www.google.com/maps/search/clinica+fisioterapia+${pueblo.slug}+sevilla/" target="_blank" class="btn btn-maps">🗺️ Ver Clínicas</a>
-            <a href="https://www.idealista.com/venta-locales/${pueblo.slug}-sevilla/" target="_blank" class="btn btn-idealista">🏬 Buscar Locales</a>
+            <a href="https://www.google.com/maps/search/fisioterapia+${pueblo.municipio}+sevilla/" target="_blank" class="btn btn-maps">🗺️ Ver Clínicas</a>
+            <a href="https://www.idealista.com/alquiler-locales/${pueblo.slug}-sevilla/" target="_blank" class="btn btn-idealista">🏬 Buscar Locales</a>
         </div>
     `;
 
-    // Attach Calculator Logic
     const inpFijos = document.getElementById('calc-fijos');
     const inpM2 = document.getElementById('calc-m2');
     const inpPrecio = document.getElementById('calc-precio');
@@ -529,14 +526,12 @@ function openModal(pueblo) {
     inpPrecio.addEventListener('input', recalculate);
     inpTicket.addEventListener('input', recalculate);
 
-    // Initial Calc
     recalculate();
 
     modal.classList.remove('hidden');
-    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    document.body.style.overflow = 'hidden';
 }
 
-// Close Modal
 closeBtn.onclick = () => {
     modal.classList.add('hidden');
     document.body.style.overflow = '';
@@ -545,7 +540,6 @@ modal.onclick = (e) => {
     if (e.target === modal) closeBtn.onclick();
 }
 
-// Event Listeners for Filters
 rentaSlider.addEventListener('input', (e) => {
     rentaVal.innerText = fmtMoney(e.target.value);
     renderGrid();
@@ -556,5 +550,4 @@ pobSlider.addEventListener('input', (e) => {
     renderGrid();
 });
 
-// Init
 renderGrid();
