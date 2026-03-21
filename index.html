@@ -9,55 +9,101 @@
         :root { --primary: #50C878; --primary-dark: #3BA35F; --bg-color: #F8FAFC; --card-bg: #FFFFFF; --text-main: #1E293B; --text-muted: #64748B; --border-color: #E2E8F0; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 40px; -webkit-font-smoothing: antialiased; }
+        
         .app-header { background-color: var(--primary-dark); color: white; padding: 30px 20px 45px; text-align: center; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; position: sticky; top: 0; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         .app-header h1 { font-size: 24px; font-weight: 800; }
+        
         .app-container { padding: 20px; max-width: 600px; margin: -30px auto 0; position: relative; z-index: 11; }
-        .legend-card { background: var(--card-bg); border-radius: 20px; padding: 15px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid var(--border-color); }
-        .legend-item { display: flex; align-items: center; gap: 10px; font-size: 12px; margin-bottom: 6px; color: var(--text-muted); }
+        
+        /* FILTROS DESLIZANTES */
+        .filters-card { background: var(--card-bg); border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid var(--border-color); }
+        .filter-group { margin-bottom: 15px; }
+        .filter-group:last-child { margin-bottom: 0; }
+        .filter-label { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; margin-bottom: 8px; color: var(--text-main); }
+        .filter-val { color: var(--primary-dark); }
+        input[type=range] { width: 100%; accent-color: var(--primary); }
+
+        .legend-card { background: var(--card-bg); border-radius: 20px; padding: 15px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 8px; }
+        .legend-item { font-size: 12px; color: var(--text-muted); }
+        
         .results-grid { display: flex; flex-direction: column; gap: 12px; }
         .card { background: var(--card-bg); border-radius: 18px; padding: 18px; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
         .card:active { transform: scale(0.98); background: #f1f5f9; }
         .card-title { font-size: 17px; font-weight: 800; }
         .card-score { font-size: 24px; background: #f1f5f9; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 14px; }
+        
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(8px); z-index: 100; display: none; justify-content: center; align-items: flex-end; }
         .modal-overlay.active { display: flex; }
         .modal-content { background: var(--bg-color); width: 100%; max-width: 600px; border-radius: 30px 30px 0 0; padding: 25px; animation: slideUp 0.3s ease-out; }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
-        .btn-action { display: flex; flex-direction: column; align-items: center; padding: 15px; border-radius: 16px; border: 1px solid var(--border-color); background: white; color: var(--text-main); text-decoration: none; font-weight: 700; font-size: 13px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; }
+        
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 15px 0; }
+        .btn-action { display: flex; flex-direction: column; align-items: center; padding: 12px; border-radius: 16px; border: 1px solid var(--border-color); background: white; color: var(--text-main); text-decoration: none; font-weight: 700; font-size: 13px; text-align: center; }
+        
         .calculator-card { background: white; border-radius: 20px; padding: 20px; border: 2px solid var(--primary); margin-bottom: 20px; text-align: center; }
+        .price-input-group { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 15px 0; }
+        .price-input-group input { width: 80px; padding: 10px; border-radius: 12px; border: 1px solid var(--border-color); font-size: 18px; text-align: center; font-weight: 800; color: var(--primary-dark); }
+        
         .btn-close { width: 100%; padding: 18px; background: #e2e8f0; border: none; border-radius: 15px; font-weight: 800; cursor: pointer; }
     </style>
 </head>
 <body>
     <header class="app-header">
-        <h1>FisioEstrategia Sevilla</h1>
-        <p>Ranking de Oportunidad 2026</p>
+        <h1>FisioEstrategia</h1>
+        <p>Ranking de Oportunidad Sevilla</p>
     </header>
+    
     <main class="app-container">
+        <section class="filters-card">
+            <div class="filter-group">
+                <div class="filter-label">
+                    <span>Población mínima:</span>
+                    <span class="filter-val" id="pop-val">0 hab.</span>
+                </div>
+                <input type="range" id="pop-filter" min="0" max="100000" step="5000" value="0">
+            </div>
+            <div class="filter-group">
+                <div class="filter-label">
+                    <span>Renta mínima:</span>
+                    <span class="filter-val" id="rent-val">0 €</span>
+                </div>
+                <input type="range" id="rent-filter" min="0" max="30000" step="1000" value="0">
+            </div>
+        </section>
+
         <section class="legend-card">
             <div class="legend-item">🟢 <strong>Océano Azul (> 10k hab/clínica)</strong></div>
             <div class="legend-item">🟡 <strong>Crecimiento (5k - 10k hab/clínica)</strong></div>
             <div class="legend-item">🔴 <strong>Saturado (< 5k hab/clínica)</strong></div>
         </section>
+        
         <div class="results-grid" id="results-grid"></div>
     </main>
+
     <div id="detail-modal" class="modal-overlay">
         <div class="modal-content">
             <h2 id="m-title" style="text-align:center"></h2>
-            <p id="m-ratio-text" style="text-align:center; color: var(--text-muted); font-size: 14px; margin: 10px 0 20px;"></p>
+            <p id="m-ratio-text" style="text-align:center; color: var(--text-muted); font-size: 14px; margin: 5px 0 15px;"></p>
+            
             <div class="action-grid">
-                <a href="#" id="link-maps" target="_blank" class="btn-action">📍 Google Maps<br><span style="font-size:10px; font-weight:400; color:var(--text-muted)">Ver clínicas</span></a>
-                <a href="#" id="link-idealista" target="_blank" class="btn-action">🏠 Idealista<br><span style="font-size:10px; font-weight:400; color:var(--text-muted)">Ver locales</span></a>
+                <a href="#" id="link-maps" target="_blank" class="btn-action">📍 Google Maps<br><span style="font-size:10px; font-weight:400;">Ver clínicas</span></a>
+                <a href="#" id="link-idealista" target="_blank" class="btn-action">🏠 Idealista<br><span style="font-size:10px; font-weight:400;">Ver locales</span></a>
             </div>
+
             <div class="calculator-card">
-                <p style="font-size: 11px; color: var(--primary-dark); font-weight: 800; text-transform: uppercase;">Sesiones/mes para Break-Even</p>
-                <div id="m-result" style="font-size: 42px; font-weight: 800; color: var(--primary-dark);">--</div>
-                <p style="font-size: 12px; color: var(--text-muted); margin-top: 5px;">Gastos est. (Alquiler + 600€ fijos) / 45€</p>
+                <p style="font-size: 12px; font-weight: 800; text-transform: uppercase;">Precio por sesión (€)</p>
+                <div class="price-input-group">
+                    <input type="number" id="m-price-input" value="45" min="10" max="150">
+                </div>
+                <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">Sesiones/mes para cubrir gastos:</p>
+                <div id="m-result" style="font-size: 46px; font-weight: 800; color: var(--primary-dark); line-height: 1;">--</div>
+                <p style="font-size: 11px; color: var(--text-muted); margin-top: 10px;">(Alquiler 60m² + 600€ fijos) / Precio sesión</p>
             </div>
+
             <button class="btn-close" id="close-modal">VOLVER AL LISTADO</button>
         </div>
     </div>
+
     <script>
         const data = [
             { municipio: "Brenes", poblacion: 12500, clinicas: 1, renta: 20500, precio_m2: 5.50 },
@@ -97,8 +143,37 @@
             { municipio: "Castilleja de la Cuesta", poblacion: 17500, clinicas: 11, renta: 28000, precio_m2: 9.50 }
         ];
 
+        let currentTown = null;
         const grid = document.getElementById('results-grid');
         
+        // Elementos de los filtros
+        const popFilter = document.getElementById('pop-filter');
+        const rentFilter = document.getElementById('rent-filter');
+        const popVal = document.getElementById('pop-val');
+        const rentVal = document.getElementById('rent-val');
+
+        // Elementos de la calculadora interactiva
+        const priceInput = document.getElementById('m-price-input');
+        const mResult = document.getElementById('m-result');
+
+        // Lógica de los filtros
+        popFilter.addEventListener('input', (e) => {
+            popVal.innerText = (+e.target.value).toLocaleString() + ' hab.';
+            renderList();
+        });
+
+        rentFilter.addEventListener('input', (e) => {
+            rentVal.innerText = (+e.target.value).toLocaleString() + ' €';
+            renderList();
+        });
+
+        // Lógica de la calculadora dinámica
+        priceInput.addEventListener('input', () => {
+            if(!currentTown || priceInput.value <= 0) return;
+            const gastos = 600 + (60 * currentTown.precio_m2);
+            mResult.innerText = Math.ceil(gastos / priceInput.value);
+        });
+
         function getSemaforo(ratio) { 
             if (ratio >= 10000) return "🟢"; 
             if (ratio >= 5000) return "🟡"; 
@@ -107,33 +182,52 @@
 
         function renderList() {
             grid.innerHTML = '';
-            data.sort((a,b) => (b.poblacion/b.clinicas) - (a.poblacion/a.clinicas)).forEach(item => {
+            const minPop = +popFilter.value;
+            const minRent = +rentFilter.value;
+
+            // Filtramos por población y renta, y luego ordenamos por oportunidad
+            const filteredData = data.filter(item => item.poblacion >= minPop && item.renta >= minRent);
+            
+            filteredData.sort((a,b) => (b.poblacion/b.clinicas) - (a.poblacion/a.clinicas)).forEach(item => {
                 const ratio = Math.round(item.poblacion / item.clinicas);
                 const sem = getSemaforo(ratio);
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.onclick = () => {
+                    currentTown = item; // Guardamos el pueblo actual para la calculadora
+                    
                     document.getElementById('m-title').innerText = `${sem} ${item.municipio}`;
                     document.getElementById('m-ratio-text').innerText = `1 clínica por cada ${ratio.toLocaleString()} habitantes.`;
                     
-                    // Enlaces de Google Maps e Idealista 100% operativos
                     const mapSearch = `fisioterapia en ${item.municipio}, Sevilla`;
-                    document.getElementById('link-maps').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapSearch)}`;
+                    document.getElementById('link-maps').href = `http://googleusercontent.com/maps.google.com/search?q=${encodeURIComponent(mapSearch)}`;
                     
                     let slug = item.municipio.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '-').replace(/[^\w-]/g, '');
                     document.getElementById('link-idealista').href = `https://www.idealista.com/alquiler-locales/${slug}-sevilla/`;
                     
-                    // Calculadora
-                    document.getElementById('m-result').innerText = Math.ceil((600 + (60 * item.precio_m2)) / 45);
+                    // Reseteamos el precio y calculamos
+                    priceInput.value = 45;
+                    const gastos = 600 + (60 * item.precio_m2);
+                    mResult.innerText = Math.ceil(gastos / 45);
                     
                     document.getElementById('detail-modal').classList.add('active');
                 };
-                card.innerHTML = `<div><div class="card-title">${item.municipio}</div><div style="font-size:12px; color:var(--text-muted)">Ratio 1:${ratio.toLocaleString()}</div></div><div class="card-score">${sem}</div>`;
+                card.innerHTML = `
+                    <div>
+                        <div class="card-title">${item.municipio}</div>
+                        <div style="font-size:12px; color:var(--text-muted)">
+                            Ratio 1:${ratio.toLocaleString()} | Renta: ${item.renta.toLocaleString()}€
+                        </div>
+                    </div>
+                    <div class="card-score">${sem}</div>
+                `;
                 grid.appendChild(card);
             });
         }
         
         document.getElementById('close-modal').onclick = () => document.getElementById('detail-modal').classList.remove('active');
+        
+        // Render inicial
         renderList();
     </script>
 </body>
