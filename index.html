@@ -1,261 +1,139 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FisioEstrategia Sevilla 2026 | Pro</title>
-    <meta name="theme-color" content="#50C878">
+    <title>FisioEstrategia Sevilla 2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #50C878;
-            --primary-dark: #3BA35F;
-            --bg-color: #F8FAFC;
-            --card-bg: #FFFFFF;
-            --text-main: #1E293B;
-            --text-muted: #64748B;
-            --border-color: #E2E8F0;
-        }
-
+        :root { --primary: #50C878; --primary-dark: #3BA35F; --bg-color: #F8FAFC; --card-bg: #FFFFFF; --text-main: #1E293B; --text-muted: #64748B; --border-color: #E2E8F0; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            -webkit-font-smoothing: antialiased;
-            padding-bottom: 40px;
-        }
-
-        /* Header */
-        .app-header {
-            background-color: var(--primary-dark);
-            color: white;
-            padding: 20px 20px 30px;
-            text-align: center;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
+        body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 40px; -webkit-font-smoothing: antialiased; }
+        .app-header { background-color: var(--primary-dark); color: white; padding: 30px 20px 45px; text-align: center; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; position: sticky; top: 0; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         .app-header h1 { font-size: 24px; font-weight: 800; }
-        .app-header p { font-size: 12px; font-weight: 600; text-transform: uppercase; opacity: 0.9; letter-spacing: 1px; margin-top: 5px; }
-
-        .app-container {
-            padding: 20px;
-            max-width: 600px;
-            margin: -20px auto 0;
-            position: relative;
-            z-index: 11;
-        }
-
-        /* Legend */
-        .legend-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 15px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--border-color);
-        }
-
-        .legend-item { display: flex; align-items: center; gap: 10px; font-size: 13px; margin-bottom: 8px; color: var(--text-muted); }
-        .legend-dot { font-size: 16px; }
-
-        /* Results */
-        .list-header { font-size: 18px; font-weight: 800; margin-bottom: 15px; }
+        .app-container { padding: 20px; max-width: 600px; margin: -30px auto 0; position: relative; z-index: 11; }
+        .legend-card { background: var(--card-bg); border-radius: 20px; padding: 15px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid var(--border-color); }
+        .legend-item { display: flex; align-items: center; gap: 10px; font-size: 12px; margin-bottom: 6px; color: var(--text-muted); }
         .results-grid { display: flex; flex-direction: column; gap: 12px; }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 16px;
-            border: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            transition: transform 0.1s;
-        }
-
-        .card:active { transform: scale(0.98); }
-        .card-title { font-size: 17px; font-weight: 800; color: var(--text-main); }
-        .card-subtitle { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
-        .card-kpis { display: flex; gap: 12px; font-size: 12px; }
-        .card-score { font-size: 24px; background: #f1f5f9; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 12px; }
-
-        /* Modal */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px);
-            z-index: 50; display: flex; justify-content: center; align-items: flex-end;
-            opacity: 0; pointer-events: none; transition: 0.3s;
-        }
-
-        .modal-overlay.active { opacity: 1; pointer-events: auto; }
-
-        .modal-content {
-            background: var(--bg-color); width: 100%; max-width: 600px;
-            border-radius: 24px 24px 0 0; padding: 20px;
-            transform: translateY(100%); transition: 0.3s cubic-bezier(0.17, 0.84, 0.44, 1);
-        }
-
-        .modal-overlay.active .modal-content { transform: translateY(0); }
-
-        .modal-hero { margin-bottom: 20px; text-align: center; }
-        .modal-hero h2 { font-size: 22px; font-weight: 800; }
-
-        /* Action Buttons */
-        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0; }
-        .btn-action {
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            padding: 12px; border-radius: 12px; border: 1px solid var(--border-color);
-            background: white; color: var(--text-main); font-weight: 700; font-size: 14px;
-            text-decoration: none; transition: 0.2s;
-        }
-        .btn-action:active { background: #f8fafc; }
-
-        .calculator-card {
-            background: white; border-radius: 16px; padding: 20px;
-            border: 2px solid var(--primary); margin-bottom: 20px;
-        }
-
-        .calc-result-box {
-            background: #ecfdf5; border-radius: 12px; padding: 15px;
-            text-align: center; margin-top: 15px; border: 1px dashed var(--primary);
-        }
-
-        .btn-close {
-            width: 100%; padding: 15px; background: #e2e8f0; border: none;
-            border-radius: 12px; font-weight: 700; cursor: pointer;
-        }
+        .card { background: var(--card-bg); border-radius: 18px; padding: 18px; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .card:active { transform: scale(0.98); background: #f1f5f9; }
+        .card-title { font-size: 17px; font-weight: 800; }
+        .card-score { font-size: 24px; background: #f1f5f9; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 14px; }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(8px); z-index: 100; display: none; justify-content: center; align-items: flex-end; }
+        .modal-overlay.active { display: flex; }
+        .modal-content { background: var(--bg-color); width: 100%; max-width: 600px; border-radius: 30px 30px 0 0; padding: 25px; animation: slideUp 0.3s ease-out; }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+        .btn-action { display: flex; flex-direction: column; align-items: center; padding: 15px; border-radius: 16px; border: 1px solid var(--border-color); background: white; color: var(--text-main); text-decoration: none; font-weight: 700; font-size: 13px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; }
+        .calculator-card { background: white; border-radius: 20px; padding: 20px; border: 2px solid var(--primary); margin-bottom: 20px; text-align: center; }
+        .btn-close { width: 100%; padding: 18px; background: #e2e8f0; border: none; border-radius: 15px; font-weight: 800; cursor: pointer; }
     </style>
 </head>
-
 <body>
-
     <header class="app-header">
-        <h1>FisioEstrategia</h1>
-        <p>Sevilla 2026 • Análisis de Viabilidad</p>
+        <h1>FisioEstrategia Sevilla</h1>
+        <p>Ranking de Oportunidad 2026</p>
     </header>
-
     <main class="app-container">
         <section class="legend-card">
-            <div class="legend-item"><span class="legend-dot">🟢</span> <strong>Océano Azul:</strong> > 10.000 hab/clínica.</div>
-            <div class="legend-item"><span class="legend-dot">🟡</span> <strong>Crecimiento:</strong> 5.000 - 10.000 hab/clínica.</div>
-            <div class="legend-item"><span class="legend-dot">🔴</span> <strong>Saturado:</strong> < 5.000 hab/clínica.</div>
+            <div class="legend-item">🟢 <strong>Océano Azul (> 10k hab/clínica)</strong></div>
+            <div class="legend-item">🟡 <strong>Crecimiento (5k - 10k hab/clínica)</strong></div>
+            <div class="legend-item">🔴 <strong>Saturado (< 5k hab/clínica)</strong></div>
         </section>
-
-        <h3 class="list-header">Municipios Analizados</h3>
-        <section class="results-grid" id="results-grid"></section>
+        <div class="results-grid" id="results-grid"></div>
     </main>
-
     <div id="detail-modal" class="modal-overlay">
         <div class="modal-content">
-            <div class="modal-hero">
-                <h2 id="m-title">Municipio</h2>
-                <p id="m-subtitle" style="color: var(--text-muted); font-weight: 600;"></p>
-            </div>
-
+            <h2 id="m-title" style="text-align:center"></h2>
+            <p id="m-ratio-text" style="text-align:center; color: var(--text-muted); font-size: 14px; margin: 10px 0 20px;"></p>
             <div class="action-grid">
-                <a href="#" id="link-maps" target="_blank" class="btn-action">
-                    📍 Google Maps
-                </a>
-                <a href="#" id="link-idealista" target="_blank" class="btn-action">
-                    🏠 Ver Locales
-                </a>
+                <a href="#" id="link-maps" target="_blank" class="btn-action">📍 Google Maps<br><span style="font-size:10px; font-weight:400; color:var(--text-muted)">Ver clínicas</span></a>
+                <a href="#" id="link-idealista" target="_blank" class="btn-action">🏠 Idealista<br><span style="font-size:10px; font-weight:400; color:var(--text-muted)">Ver locales</span></a>
             </div>
-
             <div class="calculator-card">
-                <p style="font-weight: 800; color: var(--primary-dark); margin-bottom: 10px;">Cálculo de Break-Even</p>
-                <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 5px;">
-                    Alquiler estimado (60m²): <span id="m-rent-est" style="font-weight: 700;">--</span>
-                </div>
-                <div class="calc-result-box">
-                    <div style="font-size: 12px; color: var(--primary-dark); font-weight: 700;">SESIONES/MES PARA CUBRIR GASTOS</div>
-                    <div id="m-result" style="font-size: 32px; font-weight: 800; color: var(--primary-dark);">--</div>
-                </div>
+                <p style="font-size: 11px; color: var(--primary-dark); font-weight: 800; text-transform: uppercase;">Sesiones/mes para Break-Even</p>
+                <div id="m-result" style="font-size: 42px; font-weight: 800; color: var(--primary-dark);">--</div>
+                <p style="font-size: 12px; color: var(--text-muted); margin-top: 5px;">Gastos est. (Alquiler + 600€ fijos) / 45€</p>
             </div>
-
-            <button class="btn-close" id="close-modal">Cerrar Análisis</button>
+            <button class="btn-close" id="close-modal">VOLVER AL LISTADO</button>
         </div>
     </div>
-
     <script>
         const data = [
-            { municipio: "Utrera", perfil: "Cabecera Comarca", poblacion: 51718, renta: 24200, clinicas: 4, precio_m2: 9.25 },
-            { municipio: "Los Palacios y V.", perfil: "Crecimiento Alto", poblacion: 38698, renta: 22800, clinicas: 3, precio_m2: 7.00 },
-            { municipio: "Dos Hermanas", perfil: "Metropolitano", poblacion: 138981, renta: 29500, clinicas: 12, precio_m2: 12.00 },
-            { municipio: "Carmona", perfil: "Turístico", poblacion: 29551, renta: 25100, clinicas: 2, precio_m2: 6.50 },
-            { municipio: "La Rinconada", perfil: "Industrial", poblacion: 40162, renta: 25900, clinicas: 5, precio_m2: 7.50 },
-            { municipio: "Tomares", perfil: "Renta Muy Alta", poblacion: 25370, renta: 38200, clinicas: 15, precio_m2: 13.00 },
-            { municipio: "Bormujos", perfil: "Renta Alta", poblacion: 22780, renta: 31500, clinicas: 8, precio_m2: 10.00 }
+            { municipio: "Brenes", poblacion: 12500, clinicas: 1, renta: 20500, precio_m2: 5.50 },
+            { municipio: "El Viso del Alcor", poblacion: 19200, clinicas: 1, renta: 21800, precio_m2: 6.00 },
+            { municipio: "Guillena", poblacion: 13500, clinicas: 1, renta: 23000, precio_m2: 6.00 },
+            { municipio: "Pilas", poblacion: 14000, clinicas: 1, renta: 21000, precio_m2: 5.50 },
+            { municipio: "Carmona", poblacion: 29551, clinicas: 2, renta: 25100, precio_m2: 6.50 },
+            { municipio: "Lebrija", poblacion: 27674, clinicas: 2, renta: 22100, precio_m2: 6.20 },
+            { municipio: "Mairena del Alcor", poblacion: 23700, clinicas: 2, renta: 24500, precio_m2: 6.80 },
+            { municipio: "La Algaba", poblacion: 16500, clinicas: 1, renta: 22500, precio_m2: 7.50 },
+            { municipio: "Lora del Río", poblacion: 18500, clinicas: 1, renta: 21000, precio_m2: 5.00 },
+            { municipio: "Utrera", poblacion: 51718, clinicas: 4, renta: 24200, precio_m2: 9.25 },
+            { municipio: "Los Palacios y Villafranca", poblacion: 38698, clinicas: 3, renta: 22800, precio_m2: 7.00 },
+            { municipio: "Coria del Río", poblacion: 31000, clinicas: 3, renta: 23100, precio_m2: 7.20 },
+            { municipio: "La Rinconada", poblacion: 40162, clinicas: 4, renta: 25900, precio_m2: 7.50 },
+            { municipio: "Arahal", poblacion: 19500, clinicas: 2, renta: 21500, precio_m2: 5.50 },
+            { municipio: "Marchena", poblacion: 19300, clinicas: 2, renta: 20800, precio_m2: 5.00 },
+            { municipio: "Osuna", poblacion: 17500, clinicas: 2, renta: 22500, precio_m2: 5.50 },
+            { municipio: "San Juan de Aznalfarache", poblacion: 22138, clinicas: 2, renta: 24800, precio_m2: 9.50 },
+            { municipio: "Las Cabezas de San Juan", poblacion: 16200, clinicas: 2, renta: 20500, precio_m2: 5.00 },
+            { municipio: "Sanlúcar la Mayor", poblacion: 14100, clinicas: 3, renta: 24500, precio_m2: 7.50 },
+            { municipio: "Gelves", poblacion: 10300, clinicas: 2, renta: 29000, precio_m2: 8.50 },
+            { municipio: "Estepa", poblacion: 12400, clinicas: 3, renta: 21000, precio_m2: 5.00 },
+            { municipio: "Alcalá del Río", poblacion: 12200, clinicas: 2, renta: 22000, precio_m2: 6.50 },
+            { municipio: "Puebla de Cazalla", poblacion: 10900, clinicas: 1, renta: 20000, precio_m2: 5.00 },
+            { municipio: "Cantillana", poblacion: 10700, clinicas: 2, renta: 19500, precio_m2: 5.00 },
+            { municipio: "Bollullos de la Mitación", poblacion: 11100, clinicas: 3, renta: 28000, precio_m2: 8.00 },
+            { municipio: "Dos Hermanas", poblacion: 138981, clinicas: 16, renta: 29500, precio_m2: 12.00 },
+            { municipio: "Alcalá de Guadaíra", poblacion: 76547, clinicas: 14, renta: 26800, precio_m2: 8.50 },
+            { municipio: "Écija", poblacion: 39743, clinicas: 10, renta: 23500, precio_m2: 6.00 },
+            { municipio: "Espartinas", poblacion: 16500, clinicas: 4, renta: 36000, precio_m2: 10.00 },
+            { municipio: "Gines", poblacion: 13500, clinicas: 6, renta: 34000, precio_m2: 11.50 },
+            { municipio: "Mairena del Aljarafe", poblacion: 47541, clinicas: 18, renta: 35400, precio_m2: 11.00 },
+            { municipio: "Camas", poblacion: 27444, clinicas: 9, renta: 25400, precio_m2: 9.00 },
+            { municipio: "Tomares", poblacion: 25370, clinicas: 18, renta: 38200, precio_m2: 13.00 },
+            { municipio: "Bormujos", poblacion: 22780, clinicas: 12, renta: 31500, precio_m2: 10.00 },
+            { municipio: "Castilleja de la Cuesta", poblacion: 17500, clinicas: 11, renta: 28000, precio_m2: 9.50 }
         ];
 
         const grid = document.getElementById('results-grid');
-        const modal = document.getElementById('detail-modal');
-
-        function getSemaforo(ratio) {
-            if (ratio >= 10000) return "🟢";
-            if (ratio >= 5000) return "🟡";
-            return "🔴";
+        
+        function getSemaforo(ratio) { 
+            if (ratio >= 10000) return "🟢"; 
+            if (ratio >= 5000) return "🟡"; 
+            return "🔴"; 
         }
 
         function renderList() {
-            // Ordenar por ratio de mayor a menor
-            data.sort((a, b) => (b.poblacion / b.clinicas) - (a.poblacion / a.clinicas));
-            
             grid.innerHTML = '';
-            data.forEach(item => {
+            data.sort((a,b) => (b.poblacion/b.clinicas) - (a.poblacion/a.clinicas)).forEach(item => {
                 const ratio = Math.round(item.poblacion / item.clinicas);
-                const semaforo = getSemaforo(ratio);
-                
+                const sem = getSemaforo(ratio);
                 const card = document.createElement('div');
                 card.className = 'card';
-                card.onclick = () => openModal(item, ratio, semaforo);
-                card.innerHTML = `
-                    <div>
-                        <div class="card-title">${item.municipio}</div>
-                        <div class="card-subtitle">${item.perfil}</div>
-                        <div class="card-kpis">
-                            <span>Ratio: <strong>${ratio.toLocaleString()}</strong></span>
-                            <span>Renta: <strong>${item.renta.toLocaleString()}€</strong></span>
-                        </div>
-                    </div>
-                    <div class="card-score">${semaforo}</div>
-                `;
+                card.onclick = () => {
+                    document.getElementById('m-title').innerText = `${sem} ${item.municipio}`;
+                    document.getElementById('m-ratio-text').innerText = `1 clínica por cada ${ratio.toLocaleString()} habitantes.`;
+                    
+                    // Enlaces de Google Maps e Idealista 100% operativos
+                    const mapSearch = `fisioterapia en ${item.municipio}, Sevilla`;
+                    document.getElementById('link-maps').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapSearch)}`;
+                    
+                    let slug = item.municipio.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+                    document.getElementById('link-idealista').href = `https://www.idealista.com/alquiler-locales/${slug}-sevilla/`;
+                    
+                    // Calculadora
+                    document.getElementById('m-result').innerText = Math.ceil((600 + (60 * item.precio_m2)) / 45);
+                    
+                    document.getElementById('detail-modal').classList.add('active');
+                };
+                card.innerHTML = `<div><div class="card-title">${item.municipio}</div><div style="font-size:12px; color:var(--text-muted)">Ratio 1:${ratio.toLocaleString()}</div></div><div class="card-score">${sem}</div>`;
                 grid.appendChild(card);
             });
         }
-
-        function openModal(item, ratio, semaforo) {
-            document.getElementById('m-title').innerText = `${semaforo} ${item.municipio}`;
-            document.getElementById('m-subtitle').innerText = `${item.perfil} • Ratio 1:${ratio}`;
-            
-            // Reparación de Enlaces
-            // Google Maps: Búsqueda directa de "Fisioterapia en [Municipio]"
-            document.getElementById('link-maps').href = `https://www.google.com/maps/search/fisioterapia+en+${encodeURIComponent(item.municipio)}`;
-            
-            // Idealista: Búsqueda de locales en alquiler en el municipio
-            const slug = item.municipio.toLowerCase().replace(/ /g, '-');
-            document.getElementById('link-idealista').href = `https://www.idealista.com/alquiler-locales/${slug}-sevilla/`;
-
-            // Cálculo Financiero
-            const costeAlquiler = 60 * item.precio_m2;
-            const costesFijosTotal = 600 + costeAlquiler;
-            const sesionesNecesarias = Math.ceil(costesFijosTotal / 45);
-
-            document.getElementById('m-rent-est').innerText = `${costeAlquiler.toFixed(0)} €/mes`;
-            document.getElementById('m-result').innerText = sesionesNecesarias;
-
-            modal.classList.add('active');
-        }
-
-        document.getElementById('close-modal').onclick = () => modal.classList.remove('active');
         
-        // Inicializar
+        document.getElementById('close-modal').onclick = () => document.getElementById('detail-modal').classList.remove('active');
         renderList();
     </script>
 </body>
