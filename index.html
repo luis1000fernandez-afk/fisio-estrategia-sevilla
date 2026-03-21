@@ -4,31 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FisioEstrategia Sevilla 2026</title>
+    <title>FisioEstrategia Sevilla 2026 | Pro</title>
     <meta name="theme-color" content="#50C878">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #50C878;
-            /* Verde Esmeralda */
             --primary-dark: #3BA35F;
-            /* Tono oscuro para hover/header */
             --bg-color: #F8FAFC;
             --card-bg: #FFFFFF;
             --text-main: #1E293B;
             --text-muted: #64748B;
-            --green: #10B981;
-            --yellow: #F59E0B;
-            --red: #EF4444;
             --border-color: #E2E8F0;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
         body {
             background-color: var(--bg-color);
@@ -37,578 +27,236 @@
             padding-bottom: 40px;
         }
 
-        /* Icono SVG Health-Analytics */
-        .icon-health {
-            width: 32px;
-            height: 32px;
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            margin-right: 10px;
-        }
-
         /* Header */
         .app-header {
             background-color: var(--primary-dark);
             color: white;
             padding: 20px 20px 30px;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
             position: sticky;
             top: 0;
             z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
         }
 
-        .header-title-wrapper {
-            display: flex;
-            align-items: center;
-            margin-bottom: 5px;
-        }
+        .app-header h1 { font-size: 24px; font-weight: 800; }
+        .app-header p { font-size: 12px; font-weight: 600; text-transform: uppercase; opacity: 0.9; letter-spacing: 1px; margin-top: 5px; }
 
-        .app-header h1 {
-            font-size: 24px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-        }
-
-        .app-header p {
-            font-size: 14px;
-            opacity: 0.9;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Container */
         .app-container {
             padding: 20px;
             max-width: 600px;
-            margin: 0 auto;
-            margin-top: -20px;
+            margin: -20px auto 0;
             position: relative;
             z-index: 11;
         }
 
-        /* Legend Card */
+        /* Legend */
         .legend-card {
             background: var(--card-bg);
             border-radius: 16px;
-            padding: 20px;
+            padding: 15px;
             margin-bottom: 25px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
             border: 1px solid var(--border-color);
         }
 
-        .legend-card h2 {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: var(--primary-dark);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .legend-item { display: flex; align-items: center; gap: 10px; font-size: 13px; margin-bottom: 8px; color: var(--text-muted); }
+        .legend-dot { font-size: 16px; }
 
-        .legend-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 12px;
-            font-size: 13px;
-            line-height: 1.4;
-            color: var(--text-muted);
-        }
-
-        .legend-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .legend-dot {
-            font-size: 18px;
-            margin-right: 10px;
-            flex-shrink: 0;
-            line-height: 1;
-        }
-
-        .legend-text strong {
-            color: var(--text-main);
-            display: block;
-            margin-bottom: 2px;
-        }
-
-        /* Results List (Mobile-First) */
-        .list-header {
-            font-size: 18px;
-            font-weight: 800;
-            margin-bottom: 15px;
-            padding-left: 5px;
-        }
-
-        .results-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+        /* Results */
+        .list-header { font-size: 18px; font-weight: 800; margin-bottom: 15px; }
+        .results-grid { display: flex; flex-direction: column; gap: 12px; }
 
         .card {
             background: var(--card-bg);
             border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
-            cursor: pointer;
+            padding: 16px;
             border: 1px solid var(--border-color);
-            position: relative;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            cursor: pointer;
             transition: transform 0.1s;
         }
 
-        .card:active {
-            transform: scale(0.98);
-            background-color: #F8FAFC;
-        }
+        .card:active { transform: scale(0.98); }
+        .card-title { font-size: 17px; font-weight: 800; color: var(--text-main); }
+        .card-subtitle { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+        .card-kpis { display: flex; gap: 12px; font-size: 12px; }
+        .card-score { font-size: 24px; background: #f1f5f9; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 12px; }
 
-        .card-content {
-            flex: 1;
-            padding-right: 10px;
-        }
-
-        .card-title {
-            font-size: 18px;
-            font-weight: 800;
-            margin-bottom: 4px;
-            color: var(--text-main);
-        }
-
-        .card-subtitle {
-            font-size: 13px;
-            color: var(--text-muted);
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .card-kpis {
-            display: flex;
-            gap: 15px;
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
-        .card-kpis span strong {
-            color: var(--text-main);
-            font-size: 13px;
-            display: block;
-        }
-
-        .card-score {
-            font-size: 28px;
-            line-height: 1;
-            flex-shrink: 0;
-            background: var(--bg-color);
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-        }
-
-        /* Modal / Bottom Sheet */
+        /* Modal */
         .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(5px);
-            z-index: 50;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px);
+            z-index: 50; display: flex; justify-content: center; align-items: flex-end;
+            opacity: 0; pointer-events: none; transition: 0.3s;
         }
 
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
 
         .modal-content {
-            background: var(--bg-color);
-            width: 100%;
-            max-width: 600px;
-            max-height: 90vh;
-            border-radius: 24px 24px 0 0;
-            display: flex;
-            flex-direction: column;
-            transform: translateY(100%);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1);
-            position: relative;
-            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.2);
+            background: var(--bg-color); width: 100%; max-width: 600px;
+            border-radius: 24px 24px 0 0; padding: 20px;
+            transform: translateY(100%); transition: 0.3s cubic-bezier(0.17, 0.84, 0.44, 1);
         }
 
-        .modal-overlay.active .modal-content {
-            transform: translateY(0);
-        }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
 
-        .modal-drag-handle {
-            width: 40px;
-            height: 5px;
-            background: #CBD5E1;
-            border-radius: 3px;
-            margin: 15px auto;
-        }
+        .modal-hero { margin-bottom: 20px; text-align: center; }
+        .modal-hero h2 { font-size: 22px; font-weight: 800; }
 
-        .modal-scrollable {
-            padding: 0 25px 30px;
-            overflow-y: auto;
-            flex: 1;
+        /* Action Buttons */
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0; }
+        .btn-action {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 12px; border-radius: 12px; border: 1px solid var(--border-color);
+            background: white; color: var(--text-main); font-weight: 700; font-size: 14px;
+            text-decoration: none; transition: 0.2s;
         }
+        .btn-action:active { background: #f8fafc; }
 
-        .modal-hero {
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .modal-hero h2 {
-            font-size: 24px;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .modal-hero p {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-top: 5px;
-            font-weight: 600;
-        }
-
-        /* Break-Even Calculator Card in Modal */
         .calculator-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 25px;
-            border: 2px solid var(--primary);
-            box-shadow: 0 10px 25px rgba(80, 200, 120, 0.15);
-            margin-bottom: 25px;
-        }
-
-        .calc-header {
-            font-size: 16px;
-            font-weight: 800;
-            color: var(--primary-dark);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .calc-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            font-size: 14px;
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        .calc-value {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text-main);
-            background: var(--bg-color);
-            padding: 8px 12px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
+            background: white; border-radius: 16px; padding: 20px;
+            border: 2px solid var(--primary); margin-bottom: 20px;
         }
 
         .calc-result-box {
-            background: rgba(80, 200, 120, 0.1);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            margin-top: 25px;
-            border: 1px dashed var(--primary);
-        }
-
-        .calc-result-box .label {
-            font-size: 13px;
-            color: var(--primary-dark);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 5px;
-        }
-
-        .calc-result-box .number {
-            font-size: 36px;
-            font-weight: 800;
-            color: var(--primary-dark);
-            line-height: 1;
-            margin-bottom: 5px;
-        }
-
-        .calc-result-box .subtext {
-            font-size: 12px;
-            color: var(--text-muted);
+            background: #ecfdf5; border-radius: 12px; padding: 15px;
+            text-align: center; margin-top: 15px; border: 1px dashed var(--primary);
         }
 
         .btn-close {
-            width: 100%;
-            padding: 16px;
-            background: #E2E8F0;
-            color: var(--text-main);
-            border: none;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .btn-close:active {
-            background: #CBD5E1;
+            width: 100%; padding: 15px; background: #e2e8f0; border: none;
+            border-radius: 12px; font-weight: 700; cursor: pointer;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Header UI -->
     <header class="app-header">
-        <div class="header-title-wrapper">
-            <svg class="icon-health" viewBox="0 0 24 24">
-                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-            </svg>
-            <h1>FisioEstrategia</h1>
-        </div>
-        <p>Sevilla 2026</p>
+        <h1>FisioEstrategia</h1>
+        <p>Sevilla 2026 • Análisis de Viabilidad</p>
     </header>
 
     <main class="app-container">
-        <!-- Legend / Strategy Guide -->
         <section class="legend-card">
-            <h2>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <path d="M12 16v-4"></path>
-                    <path d="M12 8h.01"></path>
-                </svg>
-                Guía de Viabilidad Estratégica
-            </h2>
-            <div class="legend-item">
-                <div class="legend-dot">🟢</div>
-                <div class="legend-text"><strong>Océano Azul</strong> Baja saturación (ratio > 6000 hab/clínica) y alta
-                    rentabilidad. Ideal para especialización.</div>
-            </div>
-            <div class="legend-item">
-                <div class="legend-dot">🟡</div>
-                <div class="legend-text"><strong>Mercado en Crecimiento</strong> Equilibrio entre competencia y demanda.
-                    Exige estrategia de marketing agresiva.</div>
-            </div>
-            <div class="legend-item">
-                <div class="legend-dot">🔴</div>
-                <div class="legend-text"><strong>Mercado Saturado</strong> Alta barrera de entrada, pacientes
-                    polarizados. Requiere alta inversión.</div>
-            </div>
+            <div class="legend-item"><span class="legend-dot">🟢</span> <strong>Océano Azul:</strong> > 10.000 hab/clínica.</div>
+            <div class="legend-item"><span class="legend-dot">🟡</span> <strong>Crecimiento:</strong> 5.000 - 10.000 hab/clínica.</div>
+            <div class="legend-item"><span class="legend-dot">🔴</span> <strong>Saturado:</strong> < 5.000 hab/clínica.</div>
         </section>
 
-        <!-- Dynamic List -->
         <h3 class="list-header">Municipios Analizados</h3>
-        <section class="results-grid" id="results-grid">
-            <!-- Cards injected via JS -->
-        </section>
+        <section class="results-grid" id="results-grid"></section>
     </main>
 
-    <!-- Break-Even Modal (Bottom Sheet) -->
     <div id="detail-modal" class="modal-overlay">
         <div class="modal-content">
-            <div class="modal-drag-handle"></div>
-            <div class="modal-scrollable">
-                <div class="modal-hero">
-                    <h2 id="m-title">🟢 Municipio</h2>
-                    <p id="m-subtitle">Perfil</p>
-                </div>
-
-                <div class="calculator-card">
-                    <div class="calc-header">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
-                            <line x1="8" y1="6" x2="16" y2="6"></line>
-                            <line x1="16" y1="14" x2="16" y2="14.01"></line>
-                            <line x1="12" y1="14" x2="12" y2="14.01"></line>
-                            <line x1="8" y1="14" x2="8" y2="14.01"></line>
-                            <line x1="16" y1="10" x2="16" y2="10.01"></line>
-                            <line x1="12" y1="10" x2="12" y2="10.01"></line>
-                            <line x1="8" y1="10" x2="8" y2="10.01"></line>
-                            <line x1="16" y1="18" x2="16" y2="18.01"></line>
-                            <line x1="12" y1="18" x2="12" y2="18.01"></line>
-                            <line x1="8" y1="18" x2="8" y2="18.01"></line>
-                        </svg>
-                        Calculadora Break-Even
-                    </div>
-
-                    <div class="calc-row">
-                        Costes Fijos Base
-                        <div class="calc-value">600 €</div>
-                    </div>
-                    <div class="calc-row">
-                        Local Estándar
-                        <div class="calc-value">60 m²</div>
-                    </div>
-                    <div class="calc-row" style="color: var(--primary-dark)">
-                        Precio Inmobiliario (€/m²)
-                        <div class="calc-value" style="border-color: var(--primary); color: var(--primary-dark)"
-                            id="m-precio">-- €</div>
-                    </div>
-                    <div class="calc-row">
-                        Precio por Sesión
-                        <div class="calc-value">45 €</div>
-                    </div>
-
-                    <div class="calc-result-box">
-                        <div class="label">Sesiones/mes para cubrir gastos</div>
-                        <div class="number" id="m-result">--</div>
-                        <div class="subtext">Todo paciente extra será beneficio neto.</div>
-                    </div>
-                </div>
-
-                <button class="btn-close" id="close-modal">Cerrar Análisis</button>
+            <div class="modal-hero">
+                <h2 id="m-title">Municipio</h2>
+                <p id="m-subtitle" style="color: var(--text-muted); font-weight: 600;"></p>
             </div>
+
+            <div class="action-grid">
+                <a href="#" id="link-maps" target="_blank" class="btn-action">
+                    📍 Google Maps
+                </a>
+                <a href="#" id="link-idealista" target="_blank" class="btn-action">
+                    🏠 Ver Locales
+                </a>
+            </div>
+
+            <div class="calculator-card">
+                <p style="font-weight: 800; color: var(--primary-dark); margin-bottom: 10px;">Cálculo de Break-Even</p>
+                <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 5px;">
+                    Alquiler estimado (60m²): <span id="m-rent-est" style="font-weight: 700;">--</span>
+                </div>
+                <div class="calc-result-box">
+                    <div style="font-size: 12px; color: var(--primary-dark); font-weight: 700;">SESIONES/MES PARA CUBRIR GASTOS</div>
+                    <div id="m-result" style="font-size: 32px; font-weight: 800; color: var(--primary-dark);">--</div>
+                </div>
+            </div>
+
+            <button class="btn-close" id="close-modal">Cerrar Análisis</button>
         </div>
     </div>
 
-    <!-- JavaScript Data and Logic -->
     <script>
         const data = [
-            { id: "SEV-003", municipio: "Utrera", perfil: "Cabecera Comarca", poblacion: 51718, renta: 24200, clinicas: 8, ratio: 6464, semaforo: "🟢", precio_m2: 9.25 },
-            { id: "SEV-007", municipio: "Los Palacios y V.", perfil: "Tradicional Agrícola", poblacion: 38698, renta: 22800, clinicas: 5, ratio: 7739, semaforo: "🟢", precio_m2: 7.00 },
-            { id: "SEV-001", municipio: "Dos Hermanas", perfil: "Núcleo Metropolitano", poblacion: 138981, renta: 29500, clinicas: 25, ratio: 5559, semaforo: "🟢", precio_m2: 12.00 },
-            { id: "SEV-012", municipio: "Bormujos", perfil: "Crecimiento Joven", poblacion: 22780, renta: 31500, clinicas: 5, ratio: 4556, semaforo: "🟢", precio_m2: 10.00 },
-            { id: "SEV-009", municipio: "Carmona", perfil: "Turístico / Residencial", poblacion: 29551, renta: 25100, clinicas: 4, ratio: 7387, semaforo: "🟢", precio_m2: 6.50 },
-            { id: "SEV-005", municipio: "La Rinconada", perfil: "Crecimiento Industrial", poblacion: 40162, renta: 25900, clinicas: 6, ratio: 6693, semaforo: "🟡", precio_m2: 7.50 },
-            { id: "SEV-006", municipio: "Écija", perfil: "Cabecera Comarca", poblacion: 39530, renta: 23500, clinicas: 6, ratio: 6588, semaforo: "🟡", precio_m2: 6.00 },
-            { id: "SEV-002", municipio: "Alcalá de Guadaíra", perfil: "Industrial Consolidado", poblacion: 76547, renta: 26800, clinicas: 15, ratio: 5103, semaforo: "🟡", precio_m2: 8.50 },
-            { id: "SEV-004", municipio: "Mairena del Aljarafe", perfil: "Renta Alta", poblacion: 47541, renta: 35400, clinicas: 14, ratio: 3395, semaforo: "🟡", precio_m2: 11.00 },
-            { id: "SEV-008", municipio: "Coria del Río", perfil: "Tradicional Metropolitano", poblacion: 30887, renta: 24500, clinicas: 5, ratio: 6177, semaforo: "🟡", precio_m2: 7.00 },
-            { id: "SEV-011", municipio: "Tomares", perfil: "Renta Alta", poblacion: 25370, renta: 38200, clinicas: 9, ratio: 2818, semaforo: "🟡", precio_m2: 13.00 },
-            { id: "SEV-010", municipio: "Camas", perfil: "Frontera Capital", poblacion: 27443, renta: 25400, clinicas: 6, ratio: 4573, semaforo: "🔴", precio_m2: 9.50 },
-            { id: "SEV-013", municipio: "Lebrija", perfil: "Núcleo Independiente", poblacion: 27665, renta: 18500, clinicas: 4, ratio: 6916, semaforo: "🟢", precio_m2: 6.00 },
-            { id: "SEV-014", municipio: "Morón de la Frontera", perfil: "Aislamiento Geográfico", poblacion: 27357, renta: 18900, clinicas: 4, ratio: 6839, semaforo: "🟢", precio_m2: 6.50 },
-            { id: "SEV-015", municipio: "San Juan de Aznalfarache", perfil: "Frontera Capital Sur", poblacion: 22138, renta: 19500, clinicas: 6, ratio: 3689, semaforo: "🟡", precio_m2: 8.00 },
-            { id: "SEV-016", municipio: "Arahal", perfil: "La Campiña Agrícola", poblacion: 19476, renta: 18400, clinicas: 3, ratio: 6492, semaforo: "🟢", precio_m2: 5.50 },
-            { id: "SEV-017", municipio: "Marchena", perfil: "La Campiña Tradicional", poblacion: 19264, renta: 19800, clinicas: 3, ratio: 6421, semaforo: "🟢", precio_m2: 5.50 },
-            { id: "SEV-018", municipio: "Lora del Río", perfil: "Vega Alta", poblacion: 18417, renta: 18700, clinicas: 2, ratio: 9208, semaforo: "🟢", precio_m2: 5.00 },
-            { id: "SEV-019", municipio: "Osuna", perfil: "Polo Universitario", poblacion: 17442, renta: 19200, clinicas: 3, ratio: 5814, semaforo: "🟡", precio_m2: 6.50 },
-            { id: "SEV-020", municipio: "Castilleja de la Cuesta", perfil: "Aljarafe Consolidado", poblacion: 17230, renta: 22100, clinicas: 5, ratio: 3446, semaforo: "🟡", precio_m2: 9.00 },
-            { id: "SEV-021", municipio: "La Algaba", perfil: "Expansión Norte", poblacion: 16618, renta: 18100, clinicas: 2, ratio: 8309, semaforo: "🟢", precio_m2: 7.00 },
-            { id: "SEV-022", municipio: "Espartinas", perfil: "Residencial Alto", poblacion: 16401, renta: 31500, clinicas: 3, ratio: 5467, semaforo: "🟡", precio_m2: 9.50 },
-            { id: "SEV-023", municipio: "Sanlúcar la Mayor", perfil: "Centro Comarcal", poblacion: 14120, renta: 23400, clinicas: 3, ratio: 4706, semaforo: "🟡", precio_m2: 8.50 },
-            { id: "SEV-024", municipio: "Gines", perfil: "Aljarafe Premium", poblacion: 13428, renta: 29800, clinicas: 4, ratio: 3357, semaforo: "🟡", precio_m2: 10.50 }
+            { municipio: "Utrera", perfil: "Cabecera Comarca", poblacion: 51718, renta: 24200, clinicas: 4, precio_m2: 9.25 },
+            { municipio: "Los Palacios y V.", perfil: "Crecimiento Alto", poblacion: 38698, renta: 22800, clinicas: 3, precio_m2: 7.00 },
+            { municipio: "Dos Hermanas", perfil: "Metropolitano", poblacion: 138981, renta: 29500, clinicas: 12, precio_m2: 12.00 },
+            { municipio: "Carmona", perfil: "Turístico", poblacion: 29551, renta: 25100, clinicas: 2, precio_m2: 6.50 },
+            { municipio: "La Rinconada", perfil: "Industrial", poblacion: 40162, renta: 25900, clinicas: 5, precio_m2: 7.50 },
+            { municipio: "Tomares", perfil: "Renta Muy Alta", poblacion: 25370, renta: 38200, clinicas: 15, precio_m2: 13.00 },
+            { municipio: "Bormujos", perfil: "Renta Alta", poblacion: 22780, renta: 31500, clinicas: 8, precio_m2: 10.00 }
         ];
 
         const grid = document.getElementById('results-grid');
         const modal = document.getElementById('detail-modal');
-        const closeModalBtn = document.getElementById('close-modal');
 
-        // Formateadores
-        const fmtMoney = (val) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(val);
-        const fmtNum = (val) => new Intl.NumberFormat('es-ES').format(val);
+        function getSemaforo(ratio) {
+            if (ratio >= 10000) return "🟢";
+            if (ratio >= 5000) return "🟡";
+            return "🔴";
+        }
 
         function renderList() {
+            // Ordenar por ratio de mayor a menor
+            data.sort((a, b) => (b.poblacion / b.clinicas) - (a.poblacion / a.clinicas));
+            
             grid.innerHTML = '';
-            data.forEach(pueblo => {
+            data.forEach(item => {
+                const ratio = Math.round(item.poblacion / item.clinicas);
+                const semaforo = getSemaforo(ratio);
+                
                 const card = document.createElement('div');
                 card.className = 'card';
-                card.onclick = () => openModal(pueblo);
-
+                card.onclick = () => openModal(item, ratio, semaforo);
                 card.innerHTML = `
-                    <div class="card-content">
-                        <div class="card-title">${pueblo.municipio}</div>
-                        <div class="card-subtitle">${pueblo.perfil}</div>
+                    <div>
+                        <div class="card-title">${item.municipio}</div>
+                        <div class="card-subtitle">${item.perfil}</div>
                         <div class="card-kpis">
-                            <span>Pob: <strong>${fmtNum(pueblo.poblacion)}</strong></span>
-                            <span>Renta: <strong>${fmtMoney(pueblo.renta)}</strong></span>
+                            <span>Ratio: <strong>${ratio.toLocaleString()}</strong></span>
+                            <span>Renta: <strong>${item.renta.toLocaleString()}€</strong></span>
                         </div>
                     </div>
-                    <div class="card-score">${pueblo.semaforo}</div>
+                    <div class="card-score">${semaforo}</div>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        function openModal(pueblo) {
-            // Actualizar datos de la cabecera
-            document.getElementById('m-title').innerHTML = `${pueblo.semaforo} ${pueblo.municipio}`;
-            document.getElementById('m-subtitle').innerText = pueblo.perfil;
-            document.getElementById('m-precio').innerText = `${pueblo.precio_m2.toFixed(2)} €`;
+        function openModal(item, ratio, semaforo) {
+            document.getElementById('m-title').innerText = `${semaforo} ${item.municipio}`;
+            document.getElementById('m-subtitle').innerText = `${item.perfil} • Ratio 1:${ratio}`;
+            
+            // Reparación de Enlaces
+            // Google Maps: Búsqueda directa de "Fisioterapia en [Municipio]"
+            document.getElementById('link-maps').href = `https://www.google.com/maps/search/fisioterapia+en+${encodeURIComponent(item.municipio)}`;
+            
+            // Idealista: Búsqueda de locales en alquiler en el municipio
+            const slug = item.municipio.toLowerCase().replace(/ /g, '-');
+            document.getElementById('link-idealista').href = `https://www.idealista.com/alquiler-locales/${slug}-sevilla/`;
 
-            // MOTOR FINANCIERO: Cálculo del Break-Even
-            // Fórmula: (600 + (60 * precio_m2)) / 45, redondeando siempre hacia arriba.
-            const precioM2 = pueblo.precio_m2;
-            const costesFijos = 600;
-            const metros = 60;
-            const ticket = 45;
+            // Cálculo Financiero
+            const costeAlquiler = 60 * item.precio_m2;
+            const costesFijosTotal = 600 + costeAlquiler;
+            const sesionesNecesarias = Math.ceil(costesFijosTotal / 45);
 
-            const costeTotalMensual = costesFijos + (metros * precioM2);
-            const sesionesNecesarias = Math.ceil(costeTotalMensual / ticket);
-
-            // Inyectar el resultado exacto
+            document.getElementById('m-rent-est').innerText = `${costeAlquiler.toFixed(0)} €/mes`;
             document.getElementById('m-result').innerText = sesionesNecesarias;
 
-            // Mostrar el modal
             modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
         }
 
-        function closeModal() {
-            modal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        closeModalBtn.onclick = closeModal;
-        modal.onclick = (e) => { if (e.target === modal) closeModal(); }
-
-        // Gestor de Desplazamiento (Drag handle swipe-down to close simulation)
-        let touchstartY = 0;
-        let touchendY = 0;
-        const modalContent = document.querySelector('.modal-content');
-
-        modalContent.addEventListener('touchstart', e => {
-            touchstartY = e.changedTouches[0].screenY;
-        }, { passive: true });
-
-        modalContent.addEventListener('touchend', e => {
-            touchendY = e.changedTouches[0].screenY;
-            if (touchendY > touchstartY + 50) { // Swipe down threshold
-                // Comprobamos si el scroll interno está arriba del todo para que no cierre al hacer scroll
-                const scrollable = document.querySelector('.modal-scrollable');
-                if (scrollable.scrollTop === 0) {
-                    closeModal();
-                }
-            }
-        }, { passive: true });
-
-        // Inicializar la interfaz
+        document.getElementById('close-modal').onclick = () => modal.classList.remove('active');
+        
+        // Inicializar
         renderList();
     </script>
 </body>
-
 </html>
