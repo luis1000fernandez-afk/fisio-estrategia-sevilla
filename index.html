@@ -3,24 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FisioEstrategia Sevilla 2026</title>
+    <title>FisioEstrategia Sevilla</title>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="icon" type="image/png" href="icon.png">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #50C878; --primary-dark: #3BA35F; --bg-color: #F8FAFC; --card-bg: #FFFFFF; --text-main: #1E293B; --text-muted: #64748B; --border-color: #E2E8F0; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 40px; -webkit-font-smoothing: antialiased; }
         
-        /* Cabecera */
-        .app-header { background-color: var(--primary-dark); color: white; padding: 25px 20px 45px; text-align: center; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; position: sticky; top: 0; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        .app-header h1 { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
-        .app-header p { font-size: 13px; opacity: 0.9; font-weight: 500; }
+        .app-header { background-color: var(--primary-dark); color: white; padding: 30px 20px 50px; text-align: center; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; position: sticky; top: 0; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .app-header h1 { font-size: 24px; font-weight: 800; letter-spacing: -1px; }
+        .app-header p { font-size: 13px; opacity: 0.9; }
 
-        .app-container { padding: 20px; max-width: 600px; margin: -30px auto 0; position: relative; z-index: 11; }
+        .app-container { padding: 20px; max-width: 600px; margin: -35px auto 0; position: relative; z-index: 11; }
         
-        /* Cuadro de Filtros Superior */
+        /* Filtros */
         .filters-card { background: var(--card-bg); border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid var(--border-color); }
         .filter-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
-        .filter-title { font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.5px; }
+        .filter-title { font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--text-muted); }
         .counter-badge { background: var(--primary); color: white; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 800; }
         
         .filter-group { margin-bottom: 18px; }
@@ -28,16 +33,13 @@
         .filter-val { color: var(--primary-dark); background: #ecfdf5; padding: 2px 8px; border-radius: 6px; }
         input[type=range] { width: 100%; accent-color: var(--primary); height: 6px; cursor: pointer; }
         
-        /* Leyenda */
-        .legend-card { background: var(--card-bg); border-radius: 18px; padding: 15px; margin-bottom: 20px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 8px; }
-        .legend-item { font-size: 12px; color: var(--text-muted); font-weight: 500; }
-        
-        /* Listado */
+        /* Lista de Pueblos */
         .results-grid { display: flex; flex-direction: column; gap: 12px; }
-        .card { background: var(--card-bg); border-radius: 18px; padding: 18px; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: transform 0.2s; }
-        .card:active { transform: scale(0.98); }
-        .card-title { font-size: 17px; font-weight: 800; }
-        .card-score { font-size: 24px; background: #f1f5f9; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 14px; }
+        .card { background: var(--card-bg); border-radius: 18px; padding: 18px; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: 0.2s; }
+        .card:active { transform: scale(0.97); background: #f1f5f9; }
+        .card-title { font-size: 17px; font-weight: 800; color: var(--text-main); }
+        .card-info { font-size: 12px; color: var(--text-muted); margin-top: 2px; line-height: 1.4; }
+        .card-score { font-size: 24px; background: #f1f5f9; width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; border-radius: 14px; flex-shrink: 0; }
         
         /* Modal y Calculadora */
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); z-index: 100; display: none; justify-content: center; align-items: flex-end; }
@@ -47,20 +49,19 @@
         
         .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 15px 0; }
         .btn-action { display: flex; flex-direction: column; align-items: center; padding: 14px; border-radius: 16px; border: 1px solid var(--border-color); background: #f8fafc; color: var(--text-main); text-decoration: none; font-weight: 700; font-size: 13px; text-align: center; }
-        .btn-action span { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
         
         .calculator-card { background: white; border-radius: 20px; padding: 20px; border: 2px solid var(--primary); margin-bottom: 20px; }
         .calc-title { font-size: 14px; font-weight: 800; margin-bottom: 15px; text-align: center; color: var(--primary-dark); }
         .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
-        .calc-input-group label { font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 5px; text-transform: uppercase; }
-        .calc-input-group input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border-color); font-weight: 800; text-align: center; font-size: 16px; background: #fdfdfd; }
+        .calc-input-group label { font-size: 10px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; }
+        .calc-input-group input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border-color); font-weight: 800; text-align: center; font-size: 16px; }
         
-        .calc-breakdown { background: #f8fafc; padding: 15px; border-radius: 12px; margin-bottom: 15px; font-size: 13px; border: 1px dashed var(--border-color); }
-        .calc-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
-        .calc-row.total { border-top: 1px solid #cbd5e1; padding-top: 8px; font-weight: 800; }
+        .calc-breakdown { background: #f8fafc; padding: 12px; border-radius: 12px; margin-bottom: 15px; font-size: 13px; }
+        .calc-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
+        .calc-row.total { border-top: 1px solid #cbd5e1; padding-top: 8px; font-weight: 800; margin-top: 4px; }
         
-        .res-container { text-align: center; padding: 10px 0; }
-        .res-value { font-size: 54px; font-weight: 900; color: var(--primary-dark); line-height: 1; margin: 5px 0; }
+        .res-container { text-align: center; padding: 5px 0; }
+        .res-value { font-size: 54px; font-weight: 900; color: var(--primary-dark); line-height: 1; }
         .btn-close { width: 100%; padding: 18px; background: #f1f5f9; border: none; border-radius: 15px; font-weight: 800; cursor: pointer; }
     </style>
 </head>
@@ -68,13 +69,13 @@
 
     <header class="app-header">
         <h1>FisioEstrategia Sevilla</h1>
-        <p>Inteligencia de Mercado 2026</p>
+        <p>Análisis de Mercado v3.0</p>
     </header>
     
     <main class="app-container">
         <section class="filters-card">
             <div class="filter-header">
-                <span class="filter-title">Filtros de búsqueda</span>
+                <span class="filter-title">Configuración</span>
                 <span class="counter-badge" id="town-count">35 pueblos</span>
             </div>
             
@@ -89,12 +90,6 @@
             </div>
         </section>
         
-        <section class="legend-card">
-            <div class="legend-item">🟢 Océano Azul (>10k hab/clínica)</div>
-            <div class="legend-item">🟡 Crecimiento (5k-10k)</div>
-            <div class="legend-item">🔴 Saturado (<5k)</div>
-        </section>
-        
         <div class="results-grid" id="results-grid"></div>
     </main>
 
@@ -104,26 +99,25 @@
             <p id="m-ratio-text" style="text-align:center; color: var(--text-muted); font-size: 14px; margin: 5px 0 15px;"></p>
             
             <div class="action-grid">
-                <a href="#" id="link-maps" target="_blank" class="btn-action">📍 Ver Clínicas<span>Mapa de Calles</span></a>
+                <a href="#" id="link-maps" target="_blank" class="btn-action">📍 Mapa de Clínicas<span>Capa de Líneas</span></a>
                 <a href="#" id="link-idealista" target="_blank" class="btn-action">🏠 Buscar Locales<span>Idealista</span></a>
             </div>
 
             <div class="calculator-card">
-                <div class="calc-title">CALCULADORA EDITABLE</div>
+                <div class="calc-title">SIMULADOR EDITABLE</div>
                 <div class="calc-grid">
-                    <div class="calc-input-group"><label>Precio/Sesión (€)</label><input type="number" id="m-price-input" value="45"></div>
-                    <div class="calc-input-group"><label>M² del Local</label><input type="number" id="m-size-input" value="60"></div>
+                    <div class="calc-input-group"><label>Precio Sesión (€)</label><input type="number" id="m-price-input" value="45"></div>
+                    <div class="calc-input-group"><label>M² Local</label><input type="number" id="m-size-input" value="60"></div>
                     <div class="calc-input-group" style="grid-column: span 2;"><label>Gastos Fijos Extra (€/mes)</label><input type="number" id="m-fixed-input" value="600"></div>
                 </div>
 
                 <div class="calc-breakdown">
-                    <div class="calc-row"><span>Alquiler est. (<span id="calc-precio-m2"></span>€/m²):</span><strong id="calc-rent">-- €</strong></div>
-                    <div class="calc-row"><span>Otros gastos fijos:</span><strong id="calc-fixed">-- €</strong></div>
-                    <div class="calc-row total"><span>TOTAL GASTOS:</span><strong id="calc-total">-- €</strong></div>
+                    <div class="calc-row"><span>Alquiler (<span id="calc-precio-m2"></span>€/m²):</span><strong id="calc-rent">--</strong></div>
+                    <div class="calc-row total"><span>TOTAL GASTOS:</span><strong id="calc-total">--</strong></div>
                 </div>
 
                 <div class="res-container">
-                    <p style="font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Sesiones para el punto de equilibrio</p>
+                    <p style="font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Sesiones / Mes para cubrir gastos</p>
                     <div id="m-result" class="res-value">--</div>
                 </div>
             </div>
@@ -189,7 +183,6 @@
             const t = r + f;
             document.getElementById('calc-precio-m2').innerText = currentTown.precio_m2.toFixed(2);
             document.getElementById('calc-rent').innerText = Math.round(r) + ' €';
-            document.getElementById('calc-fixed').innerText = f + ' €';
             document.getElementById('calc-total').innerText = Math.round(t) + ' €';
             document.getElementById('m-result').innerText = p > 0 ? Math.ceil(t/p) : "--";
         }
@@ -213,9 +206,8 @@
                 card.onclick = () => {
                     currentTown = item;
                     document.getElementById('m-title').innerText = `${sem} ${item.municipio}`;
-                    document.getElementById('m-ratio-text').innerText = `1 clínica por cada ${ratio.toLocaleString()} personas.`;
+                    document.getElementById('m-ratio-text').innerText = `Población: ${item.poblacion.toLocaleString()} hab. | Ratio 1:${ratio.toLocaleString()}`;
                     
-                    // GOOGLE MAPS: Roadmap (líneas) + Búsqueda de clínicas
                     const q = encodeURIComponent(`clínicas de fisioterapia en ${item.municipio}, Sevilla`);
                     document.getElementById('link-maps').href = `https://www.google.com/maps/search/?api=1&query=${q}&basemap=roadmap`;
                     
@@ -226,7 +218,16 @@
                     updateCalc();
                     document.getElementById('detail-modal').classList.add('active');
                 };
-                card.innerHTML = `<div><div class="card-title">${item.municipio}</div><div style="font-size:12px; color:var(--text-muted)">Ratio 1:${ratio.toLocaleString()}</div></div><div class="card-score">${sem}</div>`;
+                card.innerHTML = `
+                    <div>
+                        <div class="card-title">${item.municipio}</div>
+                        <div class="card-info">
+                            <b>Población:</b> ${item.poblacion.toLocaleString()} hab.<br>
+                            <b>Ratio:</b> 1:${ratio.toLocaleString()} | <b>Renta:</b> ${item.renta.toLocaleString()}€
+                        </div>
+                    </div>
+                    <div class="card-score">${sem}</div>
+                `;
                 grid.appendChild(card);
             });
         }
