@@ -29,7 +29,7 @@
         /* MODAL CALCULADORA */
         .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 15px; overflow-y: auto; }
         .modal.active { display: flex; }
-        .modal-content { background: white; width: 100%; max-width: 450px; border-radius: 20px; padding: 20px; }
+        .modal-content { background: white; width: 100%; max-width: 450px; border-radius: 20px; padding: 20px; position: relative; }
         .m-h { font-size: 20px; font-weight: 900; margin-bottom: 15px; text-align: center; color: var(--pd); border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
         
         /* Grid de Inputs Calculadora */
@@ -43,7 +43,7 @@
         .res-val { font-size: 24px; font-weight: 900; color: var(--p); }
         .res-lbl { font-size: 11px; opacity: 0.8; text-transform: uppercase; font-weight: 700; }
 
-        .btn-link { display: block; text-align: center; padding: 12px; border-radius: 10px; text-decoration: none; font-weight: 700; margin-bottom: 8px; font-size: 13px; }
+        .btn-link { display: block; text-align: center; padding: 12px; border-radius: 10px; text-decoration: none; font-weight: 700; margin-bottom: 8px; font-size: 13px; border: none; cursor: pointer; }
         .b-maps { background: #e2e8f0; color: #1e293b; }
         .b-id { background: var(--pd); color: white; }
         .b-close { width: 100%; border: none; background: none; color: #ef4444; font-weight: 800; cursor: pointer; padding: 10px; text-transform: uppercase; font-size: 12px; }
@@ -85,8 +85,8 @@
                 <div id="res-total" class="res-val">0 €</div>
             </div>
 
-            <a id="bm" target="_blank" class="btn-link b-maps">📍 Analizar competencia en Mapa</a>
-            <a id="bi" target="_blank" class="btn-link b-id">🏠 Buscar locales en esta zona</a>
+            <a id="bm" target="_blank" class="btn-link b-maps">📍 Ver Clínicas en Mapa</a>
+            <a id="bi" target="_blank" class="btn-link b-id">🏠 Buscar Locales en Idealista</a>
             <button class="b-close" onclick="closeM()">Cerrar Calculadora</button>
         </div>
     </div>
@@ -102,7 +102,6 @@
             const alq = parseFloat(document.getElementById('c-alq').value) || 0;
             const gas = parseFloat(document.getElementById('c-gas').value) || 0;
             const aut = parseFloat(document.getElementById('c-aut').value) || 0;
-            
             const total = (pre * ses) - alq - gas - aut;
             document.getElementById('res-total').innerText = total.toLocaleString() + " €";
             document.getElementById('res-total').style.color = total > 0 ? "#10b981" : "#ef4444";
@@ -112,8 +111,12 @@
             const ratio = Math.round(item.p / item.c);
             document.getElementById('mt').innerText = item.n.toUpperCase();
             document.getElementById('m-ratio').innerText = "1:" + ratio.toLocaleString();
-            document.getElementById('bm').href = `https://www.google.com/maps/search/fisioterapia+en+${item.n}+Sevilla`;
-            document.getElementById('bi').href = `https://www.idealista.com/alquiler-locales/${item.n.toLowerCase().replace(/\s/g, '-')}-sevilla/`;
+            
+            // Corrección de enlaces
+            const cleanName = item.n.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '-');
+            document.getElementById('bm').href = `https://www.google.com/maps/search/clinica+fisioterapia+en+${item.n}+Sevilla`;
+            document.getElementById('bi').href = `https://www.idealista.com/alquiler-locales/${cleanName}-sevilla/`;
+            
             document.getElementById('md').classList.add('active');
             calc();
         }
