@@ -5,430 +5,161 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>FisioEstrategia Sevilla</title>
     
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { 
-            --primary: #50C878; 
-            --primary-dark: #3BA35F; 
-            --bg-color: #F8FAFC; 
-            --card-bg: #FFFFFF; 
-            --text-main: #1E293B; 
-            --text-muted: #64748B; 
-            --border-color: #E2E8F0; 
-        }
-        
+        :root { --primary: #50C878; --primary-dark: #3BA35F; --bg-color: #F8FAFC; --card-bg: #FFFFFF; --text-main: #1E293B; --text-muted: #64748B; --border-color: #E2E8F0; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 40px; -webkit-font-smoothing: antialiased; }
         
-        body { 
-            background-color: var(--bg-color); 
-            color: var(--text-main); 
-            padding-bottom: 40px; 
-            -webkit-font-smoothing: antialiased; 
-        }
+        .app-header { background-color: var(--primary-dark); color: white; padding: 40px 20px 60px; text-align: center; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; position: sticky; top: 0; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .app-header h1 { font-size: 26px; font-weight: 800; letter-spacing: -1px; }
         
-        /* Encabezado */
-        .app-header { 
-            background-color: var(--primary-dark); 
-            color: white; 
-            padding: 40px 20px 60px; 
-            text-align: center; 
-            border-bottom-left-radius: 30px; 
-            border-bottom-right-radius: 30px; 
-            position: sticky; 
-            top: 0; 
-            z-index: 10; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
-        }
+        .app-container { padding: 20px; max-width: 600px; margin: -35px auto 0; position: relative; z-index: 11; }
         
-        .app-header h1 { font-size: 26px; font-weight: 800; letter-spacing: -1px; margin-bottom: 5px; }
-        .app-header p { font-size: 14px; opacity: 0.9; font-weight: 500; }
-
-        .app-container { 
-            padding: 20px; 
-            max-width: 600px; 
-            margin: -35px auto 0; 
-            position: relative; 
-            z-index: 11; 
-        }
-        
-        /* Filtros */
-        .filters-card { 
-            background: var(--card-bg); 
-            border-radius: 20px; 
-            padding: 20px; 
-            margin-bottom: 20px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
-            border: 1px solid var(--border-color); 
-        }
-        
-        .filter-header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 15px; 
-            padding-bottom: 10px; 
-            border-bottom: 1px solid var(--border-color); 
-        }
-        
+        .filters-card { background: var(--card-bg); border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid var(--border-color); }
+        .filter-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
         .filter-title { font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--text-muted); }
-        
-        .counter-badge { 
-            background: var(--primary); 
-            color: white; 
-            padding: 4px 12px; 
-            border-radius: 20px; 
-            font-size: 13px; 
-            font-weight: 800; 
-        }
+        .counter-badge { background: var(--primary); color: white; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 800; }
         
         .filter-group { margin-bottom: 18px; }
+        .filter-label { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+        .filter-val { color: var(--primary-dark); background: #ecfdf5; padding: 2px 8px; border-radius: 6px; }
+        input[type=range] { width: 100%; accent-color: var(--primary); cursor: pointer; }
         
-        .filter-label { 
-            display: flex; 
-            justify-content: space-between; 
-            font-size: 13px; 
-            font-weight: 700; 
-            margin-bottom: 8px; 
-        }
-        
-        .filter-val { 
-            color: var(--primary-dark); 
-            background: #ecfdf5; 
-            padding: 2px 8px; 
-            border-radius: 6px; 
-        }
-        
-        input[type=range] { width: 100%; accent-color: var(--primary); height: 6px; cursor: pointer; }
-        
-        /* Lista de Pueblos */
         .results-grid { display: flex; flex-direction: column; gap: 12px; }
-        
-        .card { 
-            background: var(--card-bg); 
-            border-radius: 18px; 
-            padding: 18px; 
-            border: 1px solid var(--border-color); 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            cursor: pointer; 
-            transition: 0.2s; 
-        }
-        
+        .card { background: var(--card-bg); border-radius: 18px; padding: 18px; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: 0.2s; }
         .card:active { transform: scale(0.97); background: #f1f5f9; }
+        .card-title { font-size: 17px; font-weight: 800; }
+        .card-info { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+        .card-score { font-size: 24px; background: #f1f5f9; width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; border-radius: 14px; }
         
-        .card-title { font-size: 17px; font-weight: 800; color: var(--text-main); }
-        
-        .card-info { font-size: 12px; color: var(--text-muted); margin-top: 2px; line-height: 1.4; }
-        
-        .card-score { 
-            font-size: 24px; 
-            background: #f1f5f9; 
-            width: 52px; 
-            height: 52px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            border-radius: 14px; 
-            flex-shrink: 0; 
-        }
-        
-        /* Modal */
-        .modal-overlay { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            right: 0; 
-            bottom: 0; 
-            background: rgba(15, 23, 42, 0.85); 
-            backdrop-filter: blur(8px); 
-            z-index: 100; 
-            display: none; 
-            justify-content: center; 
-            align-items: flex-end; 
-        }
-        
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); z-index: 100; display: none; justify-content: center; align-items: flex-end; }
         .modal-overlay.active { display: flex; }
-        
-        .modal-content { 
-            background: var(--card-bg); 
-            width: 100%; 
-            max-width: 600px; 
-            border-radius: 30px 30px 0 0; 
-            padding: 25px; 
-            animation: slideUp 0.3s ease-out; 
-            max-height: 92vh; 
-            overflow-y: auto; 
-        }
-        
+        .modal-content { background: var(--card-bg); width: 100%; max-width: 600px; border-radius: 30px 30px 0 0; padding: 25px; max-height: 92vh; overflow-y: auto; animation: slideUp 0.3s ease-out; }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         
         .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 15px 0; }
+        .btn-action { display: flex; flex-direction: column; align-items: center; padding: 14px; border-radius: 16px; border: 1px solid var(--border-color); background: #f8fafc; color: var(--text-main); text-decoration: none; font-weight: 700; font-size: 13px; }
         
-        .btn-action { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            padding: 14px; 
-            border-radius: 16px; 
-            border: 1px solid var(--border-color); 
-            background: #f8fafc; 
-            color: var(--text-main); 
-            text-decoration: none; 
-            font-weight: 700; 
-            font-size: 13px; 
-            text-align: center; 
-        }
-        
-        .btn-action span { font-size: 10px; font-weight: 400; color: var(--text-muted); margin-top: 2px; }
-        
-        /* Calculadora */
-        .calculator-card { 
-            background: white; 
-            border-radius: 20px; 
-            padding: 20px; 
-            border: 2px solid var(--primary); 
-            margin-bottom: 20px; 
-        }
-        
-        .calc-title { font-size: 14px; font-weight: 800; margin-bottom: 15px; text-align: center; color: var(--primary-dark); }
-        
+        .calculator-card { background: white; border-radius: 20px; padding: 20px; border: 2px solid var(--primary); margin-bottom: 20px; }
         .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
+        .calc-input-group label { font-size: 10px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px; }
+        .calc-input-group input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border-color); text-align: center; font-weight: 800; }
         
-        .calc-input-group label { 
-            font-size: 10px; 
-            font-weight: 700; 
-            color: var(--text-muted); 
-            margin-bottom: 4px; 
-            text-transform: uppercase; 
-            display: block; 
-        }
-        
-        .calc-input-group input { 
-            width: 100%; 
-            padding: 12px; 
-            border-radius: 10px; 
-            border: 1px solid var(--border-color); 
-            font-weight: 800; 
-            text-align: center; 
-            font-size: 16px; 
-        }
-        
-        .calc-breakdown { background: #f8fafc; padding: 12px; border-radius: 12px; margin-bottom: 15px; font-size: 13px; }
-        
-        .calc-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
-        
-        .calc-row.total { 
-            border-top: 1px solid #cbd5e1; 
-            padding-top: 8px; 
-            font-weight: 800; 
-            margin-top: 4px; 
-        }
-        
-        .res-container { text-align: center; padding: 5px 0; }
-        
-        .res-value { font-size: 54px; font-weight: 900; color: var(--primary-dark); line-height: 1; }
-        
-        .btn-close { 
-            width: 100%; 
-            padding: 18px; 
-            background: #f1f5f9; 
-            border: none; 
-            border-radius: 15px; 
-            font-weight: 800; 
-            cursor: pointer; 
-            transition: 0.2s; 
-        }
-        
-        .btn-close:active { background: #e2e8f0; }
+        .res-value { font-size: 54px; font-weight: 900; color: var(--primary-dark); text-align: center; }
+        .btn-close { width: 100%; padding: 18px; background: #f1f5f9; border: none; border-radius: 15px; font-weight: 800; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <header class="app-header">
         <h1>FisioEstrategia Sevilla</h1>
-        <p>Análisis de Mercado v3.0</p>
+        <p>Análisis de Mercado v3.1</p>
     </header>
     
     <main class="app-container">
         <section class="filters-card">
             <div class="filter-header">
-                <span class="filter-title">Configuración de búsqueda</span>
-                <span class="counter-badge" id="town-count">-- pueblos</span>
+                <span class="filter-title">Filtros de Mercado</span>
+                <span class="counter-badge" id="town-count">0 pueblos</span>
             </div>
-            
             <div class="filter-group">
-                <div class="filter-label"><span>Población mínima</span><span class="filter-val" id="pop-val">10.000 hab.</span></div>
+                <div class="filter-label"><span>Población mínima</span><span class="filter-val" id="pop-val">10.000</span></div>
                 <input type="range" id="pop-filter" min="0" max="100000" step="5000" value="10000">
             </div>
-            
             <div class="filter-group">
                 <div class="filter-label"><span>Renta mínima</span><span class="filter-val" id="rent-val">15.000 €</span></div>
                 <input type="range" id="rent-filter" min="15000" max="40000" step="1000" value="15000">
             </div>
         </section>
-        
         <div class="results-grid" id="results-grid"></div>
     </main>
 
     <div id="detail-modal" class="modal-overlay">
         <div class="modal-content">
-            <h2 id="m-title" style="text-align:center; font-size: 24px; font-weight: 800; color: var(--text-main);"></h2>
-            <p id="m-ratio-text" style="text-align:center; color: var(--text-muted); font-size: 14px; margin: 5px 0 15px;"></p>
+            <h2 id="m-title" style="text-align:center; font-weight: 800;"></h2>
+            <p id="m-ratio-text" style="text-align:center; color: var(--text-muted); font-size: 14px; margin-bottom: 15px;"></p>
             
             <div class="action-grid">
-                <a href="#" id="link-maps" target="_blank" class="btn-action">📍 Ver Clínicas<span>Google Maps</span></a>
-                <a href="#" id="link-idealista" target="_blank" class="btn-action">🏠 Locales<span>Idealista</span></a>
+                <a href="#" id="link-maps" target="_blank" class="btn-action">📍 Ver Google Maps</a>
+                <a href="#" id="link-idealista" target="_blank" class="btn-action">🏠 Ver Locales</a>
             </div>
 
             <div class="calculator-card">
-                <div class="calc-title">SIMULADOR DE COSTES</div>
                 <div class="calc-grid">
-                    <div class="calc-input-group"><label>Precio/Sesión (€)</label><input type="number" id="m-price-input" value="45"></div>
+                    <div class="calc-input-group"><label>Precio/Sesión</label><input type="number" id="m-price-input" value="45"></div>
                     <div class="calc-input-group"><label>M² Local</label><input type="number" id="m-size-input" value="60"></div>
-                    <div class="calc-input-group" style="grid-column: span 2;"><label>Otros Gastos (€/mes)</label><input type="number" id="m-fixed-input" value="600"></div>
                 </div>
-
-                <div class="calc-breakdown">
-                    <div class="calc-row"><span>Alquiler est. (<span id="calc-precio-m2"></span>€/m²):</span><strong id="calc-rent">--</strong></div>
-                    <div class="calc-row total"><span>GASTOS TOTALES:</span><strong id="calc-total">--</strong></div>
-                </div>
-
-                <div class="res-container">
-                    <p style="font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px;">Pacientes/Mes para Punto de Equilibrio</p>
-                    <div id="m-result" class="res-value">--</div>
-                </div>
+                <div class="res-value" id="m-result">--</div>
+                <p style="text-align:center; font-size: 11px; font-weight: 700; color: var(--text-muted);">SESIONES/MES PARA EQUILIBRIO</p>
             </div>
-
-            <button class="btn-close" id="close-modal">CERRAR ANÁLISIS</button>
+            <button class="btn-close" id="close-modal">CERRAR</button>
         </div>
     </div>
 
     <script>
-        // Datos de mercado por municipio
         const data = [
-            { municipio: "Brenes", poblacion: 12500, clinicas: 1, renta: 20500, precio_m2: 5.50 },
-            { municipio: "El Viso del Alcor", poblacion: 19200, clinicas: 1, renta: 21800, precio_m2: 6.00 },
-            { municipio: "Guillena", poblacion: 13500, clinicas: 1, renta: 23000, precio_m2: 6.00 },
-            { municipio: "Pilas", poblacion: 14000, clinicas: 1, renta: 21000, precio_m2: 5.50 },
-            { municipio: "Carmona", poblacion: 29551, clinicas: 2, renta: 25100, precio_m2: 6.50 },
-            { municipio: "Lebrija", poblacion: 27674, clinicas: 2, renta: 22100, precio_m2: 6.20 },
-            { municipio: "Mairena del Alcor", poblacion: 23700, clinicas: 2, renta: 24500, precio_m2: 6.80 },
-            { municipio: "La Algaba", poblacion: 16500, clinicas: 1, renta: 22500, precio_m2: 7.50 },
-            { municipio: "Lora del Río", poblacion: 18500, clinicas: 1, renta: 21000, precio_m2: 5.00 },
+            { municipio: "Brenes", poblacion: 12500, clinicas: 1, renta: 20500, precio_m2: 5.5 },
+            { municipio: "El Viso del Alcor", poblacion: 19200, clinicas: 1, renta: 21800, precio_m2: 6 },
+            { municipio: "Guillena", poblacion: 13500, clinicas: 1, renta: 23000, precio_m2: 6 },
+            { municipio: "Pilas", poblacion: 14000, clinicas: 1, renta: 21000, precio_m2: 5.5 },
+            { municipio: "Carmona", poblacion: 29551, clinicas: 2, renta: 25100, precio_m2: 6.5 },
+            { municipio: "Lebrija", poblacion: 27674, clinicas: 2, renta: 22100, precio_m2: 6.2 },
+            { municipio: "Mairena del Alcor", poblacion: 23700, clinicas: 2, renta: 24500, precio_m2: 6.8 },
+            { municipio: "La Algaba", poblacion: 16500, clinicas: 1, renta: 22500, precio_m2: 7.5 },
             { municipio: "Utrera", poblacion: 51718, clinicas: 4, renta: 24200, precio_m2: 9.25 },
-            { municipio: "Los Palacios y Villafranca", poblacion: 38698, clinicas: 3, renta: 22800, precio_m2: 7.00 },
-            { municipio: "Coria del Río", poblacion: 31000, clinicas: 3, renta: 23100, precio_m2: 7.20 },
-            { municipio: "La Rinconada", poblacion: 40162, clinicas: 4, renta: 25900, precio_m2: 7.50 },
-            { municipio: "Arahal", poblacion: 19500, clinicas: 2, renta: 21500, precio_m2: 5.50 },
-            { municipio: "Marchena", poblacion: 19300, clinicas: 2, renta: 20800, precio_m2: 5.00 },
-            { municipio: "Osuna", poblacion: 17500, clinicas: 2, renta: 22500, precio_m2: 5.50 },
-            { municipio: "San Juan de Aznalfarache", poblacion: 22138, clinicas: 2, renta: 24800, precio_m2: 9.50 },
-            { municipio: "Las Cabezas de San Juan", poblacion: 16200, clinicas: 2, renta: 20500, precio_m2: 5.00 },
-            { municipio: "Sanlúcar la Mayor", poblacion: 14100, clinicas: 3, renta: 24500, precio_m2: 7.50 },
-            { municipio: "Gelves", poblacion: 10300, clinicas: 2, renta: 29000, precio_m2: 8.50 },
-            { municipio: "Estepa", poblacion: 12400, clinicas: 3, renta: 21000, precio_m2: 5.00 },
-            { municipio: "Alcalá del Río", poblacion: 12200, clinicas: 2, renta: 22000, precio_m2: 6.50 },
-            { municipio: "Puebla de Cazalla", poblacion: 10900, clinicas: 1, renta: 20000, precio_m2: 5.00 },
-            { municipio: "Cantillana", poblacion: 10700, clinicas: 2, renta: 19500, precio_m2: 5.00 },
-            { municipio: "Bollullos de la Mitación", poblacion: 11100, clinicas: 3, renta: 28000, precio_m2: 8.00 },
-            { municipio: "Dos Hermanas", poblacion: 138981, clinicas: 16, renta: 29500, precio_m2: 12.00 },
-            { municipio: "Alcalá de Guadaíra", poblacion: 76547, clinicas: 14, renta: 26800, precio_m2: 8.50 },
-            { municipio: "Écija", poblacion: 39743, clinicas: 10, renta: 23500, precio_m2: 6.00 },
-            { municipio: "Espartinas", poblacion: 16500, clinicas: 4, renta: 36000, precio_m2: 10.00 },
-            { municipio: "Gines", poblacion: 13500, clinicas: 6, renta: 34000, precio_m2: 11.50 },
-            { municipio: "Mairena del Aljarafe", poblacion: 47541, clinicas: 18, renta: 35400, precio_m2: 11.00 },
-            { municipio: "Camas", poblacion: 27444, clinicas: 9, renta: 25400, precio_m2: 9.00 },
-            { municipio: "Tomares", poblacion: 25370, clinicas: 18, renta: 38200, precio_m2: 13.00 },
-            { municipio: "Bormujos", poblacion: 22780, clinicas: 12, renta: 31500, precio_m2: 10.00 },
-            { municipio: "Castilleja de la Cuesta", poblacion: 17500, clinicas: 11, renta: 28000, precio_m2: 9.50 }
+            { municipio: "Dos Hermanas", poblacion: 138981, clinicas: 16, renta: 29500, precio_m2: 12 },
+            { municipio: "Tomares", poblacion: 25370, clinicas: 18, renta: 38200, precio_m2: 13 }
         ];
 
-        let currentTown = null;
+        let selectedTown = null;
         const grid = document.getElementById('results-grid');
-        const popFilter = document.getElementById('pop-filter');
-        const rentFilter = document.getElementById('rent-filter');
-        const townCount = document.getElementById('town-count');
-        const priceInput = document.getElementById('m-price-input');
-        const sizeInput = document.getElementById('m-size-input');
-        const fixedInput = document.getElementById('m-fixed-input');
 
-        // Lógica de cálculo dinámico para el Punto de Equilibrio
         function updateCalc() {
-            if(!currentTown) return;
-            const p = parseFloat(priceInput.value) || 0;
-            const s = parseFloat(sizeInput.value) || 0;
-            const f = parseFloat(fixedInput.value) || 0;
-            const r = s * currentTown.precio_m2;
-            const t = r + f;
-            
-            document.getElementById('calc-precio-m2').innerText = currentTown.precio_m2.toFixed(2);
-            document.getElementById('calc-rent').innerText = Math.round(r) + ' €';
-            document.getElementById('calc-total').innerText = Math.round(t) + ' €';
-            document.getElementById('m-result').innerText = p > 0 ? Math.ceil(t/p) : "--";
+            if(!selectedTown) return;
+            const price = parseFloat(document.getElementById('m-price-input').value) || 1;
+            const size = parseFloat(document.getElementById('m-size-input').value) || 1;
+            const costs = (size * selectedTown.precio_m2) + 600; 
+            document.getElementById('m-result').innerText = Math.ceil(costs / price);
         }
 
-        [priceInput, sizeInput, fixedInput].forEach(inp => inp.addEventListener('input', updateCalc));
-
-        // Renderizado del listado principal
-        function renderList() {
+        function render() {
             grid.innerHTML = '';
-            const minPop = parseInt(popFilter.value);
-            const minRent = parseInt(rentFilter.value);
+            const minPop = document.getElementById('pop-filter').value;
+            const minRent = document.getElementById('rent-filter').value;
             
-            document.getElementById('pop-val').innerText = minPop.toLocaleString() + ' hab.';
-            document.getElementById('rent-val').innerText = minRent.toLocaleString() + ' €';
-            
-            const filtered = data.filter(item => item.poblacion >= minPop && item.renta >= minRent);
-            townCount.innerText = `${filtered.length} pueblo${filtered.length !== 1 ? 's' : ''}`;
-            
-            // Ordenamos por ratio de mercado (pacientes potenciales por clínica) de mayor a menor
-            filtered.sort((a,b) => (b.poblacion/b.clinicas) - (a.poblacion/a.clinicas)).forEach(item => {
+            document.getElementById('pop-val').innerText = parseInt(minPop).toLocaleString();
+            document.getElementById('rent-val').innerText = parseInt(minRent).toLocaleString() + ' €';
+
+            const filtered = data.filter(d => d.poblacion >= minPop && d.renta >= minRent);
+            document.getElementById('town-count').innerText = filtered.length + ' pueblos';
+
+            filtered.forEach(item => {
                 const ratio = Math.round(item.poblacion / item.clinicas);
-                const sem = ratio >= 10000 ? "🟢" : (ratio >= 5000 ? "🟡" : "🔴");
-                
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.onclick = () => {
-                    currentTown = item;
-                    document.getElementById('m-title').innerText = `${sem} ${item.municipio}`;
-                    document.getElementById('m-ratio-text').innerText = `Población: ${item.poblacion.toLocaleString()} hab. | Ratio 1:${ratio.toLocaleString()}`;
-                    
-                    const query = encodeURIComponent(`clínicas de fisioterapia en ${item.municipio}, Sevilla`);
-                    document.getElementById('link-maps').href = `https://www.google.com/maps/search/?api=1&query=${query}`;
-                    
-                    let slug = item.municipio.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '-').replace(/[^\w-]/g, '');
-                    document.getElementById('link-idealista').href = `https://www.idealista.com/alquiler-locales/${slug}-sevilla/`;
-                    
-                    // Valores base
-                    priceInput.value = 45; sizeInput.value = 60; fixedInput.value = 600;
+                const color = ratio > 8000 ? "🟢" : "🟡";
+                const div = document.createElement('div');
+                div.className = 'card';
+                div.onclick = () => {
+                    selectedTown = item;
+                    document.getElementById('m-title').innerText = color + " " + item.municipio;
+                    document.getElementById('m-ratio-text').innerText = "Ratio 1:" + ratio.toLocaleString();
+                    document.getElementById('link-maps').href = "https://www.google.com/maps/search/clinica+fisioterapia+" + item.municipio;
+                    document.getElementById('link-idealista').href = "https://www.idealista.com/alquiler-locales/" + item.municipio.toLowerCase().replace(/\s/g, '-') + "-sevilla/";
                     updateCalc();
                     document.getElementById('detail-modal').classList.add('active');
                 };
-                
-                card.innerHTML = `
-                    <div>
-                        <div class="card-title">${item.municipio}</div>
-                        <div class="card-info">
-                            <b>Ratio:</b> 1:${ratio.toLocaleString()} | <b>Renta:</b> ${item.renta.toLocaleString()}€<br>
-                            <b>Población:</b> ${item.poblacion.toLocaleString()} hab.
-                        </div>
-                    </div>
-                    <div class="card-score">${sem}</div>
-                `;
-                grid.appendChild(card);
+                div.innerHTML = `<div><div class="card-title">${item.municipio}</div><div class="card-info">Ratio: 1:${ratio}</div></div><div class="card-score">${color}</div>`;
+                grid.appendChild(div);
             });
         }
 
-        popFilter.addEventListener('input', renderList);
-        rentFilter.addEventListener('input', renderList);
+        document.getElementById('pop-filter').oninput = render;
+        document.getElementById('rent-filter').oninput = render;
+        document.getElementById('m-price-input').oninput = updateCalc;
+        document.getElementById('m-size-input').oninput = updateCalc;
         document.getElementById('close-modal').onclick = () => document.getElementById('detail-modal').classList.remove('active');
         
-        // Carga inicial tras carga del DOM
-        window.addEventListener('DOMContentLoaded', renderList);
+        window.onload = render;
     </script>
 </body>
 </html>
