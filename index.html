@@ -7,8 +7,6 @@
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="guepardo.png">
-    <link rel="icon" type="image/png" href="guepardo.png">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -16,9 +14,10 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 40px; -webkit-font-smoothing: antialiased; }
         
-        .app-header { background-color: var(--primary-dark); color: white; padding: 30px 20px 50px; text-align: center; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; position: sticky; top: 0; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        .app-header h1 { font-size: 24px; font-weight: 800; letter-spacing: -1px; }
-        .app-header p { font-size: 13px; opacity: 0.9; }
+        /* Encabezado */
+        .app-header { background-color: var(--primary-dark); color: white; padding: 40px 20px 60px; text-align: center; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; position: sticky; top: 0; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .app-header h1 { font-size: 26px; font-weight: 800; letter-spacing: -1px; margin-bottom: 5px; }
+        .app-header p { font-size: 14px; opacity: 0.9; font-weight: 500; }
 
         .app-container { padding: 20px; max-width: 600px; margin: -35px auto 0; position: relative; z-index: 11; }
         
@@ -33,7 +32,7 @@
         .filter-val { color: var(--primary-dark); background: #ecfdf5; padding: 2px 8px; border-radius: 6px; }
         input[type=range] { width: 100%; accent-color: var(--primary); height: 6px; cursor: pointer; }
         
-        /* Lista de Pueblos */
+        /* Listado de municipios */
         .results-grid { display: flex; flex-direction: column; gap: 12px; }
         .card { background: var(--card-bg); border-radius: 18px; padding: 18px; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: 0.2s; }
         .card:active { transform: scale(0.97); background: #f1f5f9; }
@@ -41,7 +40,7 @@
         .card-info { font-size: 12px; color: var(--text-muted); margin-top: 2px; line-height: 1.4; }
         .card-score { font-size: 24px; background: #f1f5f9; width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; border-radius: 14px; flex-shrink: 0; }
         
-        /* Modal y Calculadora */
+        /* Estilos del Modal */
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); z-index: 100; display: none; justify-content: center; align-items: flex-end; }
         .modal-overlay.active { display: flex; }
         .modal-content { background: var(--card-bg); width: 100%; max-width: 600px; border-radius: 30px 30px 0 0; padding: 25px; animation: slideUp 0.3s ease-out; max-height: 92vh; overflow-y: auto; }
@@ -49,11 +48,13 @@
         
         .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 15px 0; }
         .btn-action { display: flex; flex-direction: column; align-items: center; padding: 14px; border-radius: 16px; border: 1px solid var(--border-color); background: #f8fafc; color: var(--text-main); text-decoration: none; font-weight: 700; font-size: 13px; text-align: center; }
+        .btn-action span { font-size: 10px; font-weight: 400; color: var(--text-muted); margin-top: 2px; }
         
+        /* Estilos de la Calculadora */
         .calculator-card { background: white; border-radius: 20px; padding: 20px; border: 2px solid var(--primary); margin-bottom: 20px; }
         .calc-title { font-size: 14px; font-weight: 800; margin-bottom: 15px; text-align: center; color: var(--primary-dark); }
         .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
-        .calc-input-group label { font-size: 10px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; }
+        .calc-input-group label { font-size: 10px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; display: block; }
         .calc-input-group input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border-color); font-weight: 800; text-align: center; font-size: 16px; }
         
         .calc-breakdown { background: #f8fafc; padding: 12px; border-radius: 12px; margin-bottom: 15px; font-size: 13px; }
@@ -62,7 +63,8 @@
         
         .res-container { text-align: center; padding: 5px 0; }
         .res-value { font-size: 54px; font-weight: 900; color: var(--primary-dark); line-height: 1; }
-        .btn-close { width: 100%; padding: 18px; background: #f1f5f9; border: none; border-radius: 15px; font-weight: 800; cursor: pointer; }
+        .btn-close { width: 100%; padding: 18px; background: #f1f5f9; border: none; border-radius: 15px; font-weight: 800; cursor: pointer; transition: 0.2s; }
+        .btn-close:active { background: #e2e8f0; }
     </style>
 </head>
 <body>
@@ -73,10 +75,11 @@
     </header>
     
     <main class="app-container">
+        <!-- Panel de Filtros -->
         <section class="filters-card">
             <div class="filter-header">
-                <span class="filter-title">Configuración</span>
-                <span class="counter-badge" id="town-count">35 pueblos</span>
+                <span class="filter-title">Configuración de búsqueda</span>
+                <span class="counter-badge" id="town-count">-- pueblos</span>
             </div>
             
             <div class="filter-group">
@@ -90,43 +93,47 @@
             </div>
         </section>
         
+        <!-- Rejilla de Resultados -->
         <div class="results-grid" id="results-grid"></div>
     </main>
 
+    <!-- Modal de Detalles -->
     <div id="detail-modal" class="modal-overlay">
         <div class="modal-content">
-            <h2 id="m-title" style="text-align:center; font-size: 24px; font-weight: 800;"></h2>
+            <h2 id="m-title" style="text-align:center; font-size: 24px; font-weight: 800; color: var(--text-main);"></h2>
             <p id="m-ratio-text" style="text-align:center; color: var(--text-muted); font-size: 14px; margin: 5px 0 15px;"></p>
             
             <div class="action-grid">
-                <a href="#" id="link-maps" target="_blank" class="btn-action">📍 Mapa de Clínicas<span>Capa de Líneas</span></a>
-                <a href="#" id="link-idealista" target="_blank" class="btn-action">🏠 Buscar Locales<span>Idealista</span></a>
+                <a href="#" id="link-maps" target="_blank" class="btn-action">📍 Ver Clínicas<span>Google Maps</span></a>
+                <a href="#" id="link-idealista" target="_blank" class="btn-action">🏠 Locales<span>Idealista</span></a>
             </div>
 
+            <!-- Calculadora Interactiva -->
             <div class="calculator-card">
-                <div class="calc-title">SIMULADOR EDITABLE</div>
+                <div class="calc-title">SIMULADOR DE COSTES</div>
                 <div class="calc-grid">
-                    <div class="calc-input-group"><label>Precio Sesión (€)</label><input type="number" id="m-price-input" value="45"></div>
+                    <div class="calc-input-group"><label>Precio/Sesión (€)</label><input type="number" id="m-price-input" value="45"></div>
                     <div class="calc-input-group"><label>M² Local</label><input type="number" id="m-size-input" value="60"></div>
-                    <div class="calc-input-group" style="grid-column: span 2;"><label>Gastos Fijos Extra (€/mes)</label><input type="number" id="m-fixed-input" value="600"></div>
+                    <div class="calc-input-group" style="grid-column: span 2;"><label>Otros Gastos (€/mes)</label><input type="number" id="m-fixed-input" value="600"></div>
                 </div>
 
                 <div class="calc-breakdown">
-                    <div class="calc-row"><span>Alquiler (<span id="calc-precio-m2"></span>€/m²):</span><strong id="calc-rent">--</strong></div>
-                    <div class="calc-row total"><span>TOTAL GASTOS:</span><strong id="calc-total">--</strong></div>
+                    <div class="calc-row"><span>Alquiler est. (<span id="calc-precio-m2"></span>€/m²):</span><strong id="calc-rent">--</strong></div>
+                    <div class="calc-row total"><span>GASTOS TOTALES:</span><strong id="calc-total">--</strong></div>
                 </div>
 
                 <div class="res-container">
-                    <p style="font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Sesiones / Mes para cubrir gastos</p>
+                    <p style="font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px;">Pacientes/Mes para cubrir gastos</p>
                     <div id="m-result" class="res-value">--</div>
                 </div>
             </div>
 
-            <button class="btn-close" id="close-modal">CERRAR</button>
+            <button class="btn-close" id="close-modal">CERRAR ANÁLISIS</button>
         </div>
     </div>
 
     <script>
+        // Datos de mercado por municipio
         const data = [
             { municipio: "Brenes", poblacion: 12500, clinicas: 1, renta: 20500, precio_m2: 5.50 },
             { municipio: "El Viso del Alcor", poblacion: 19200, clinicas: 1, renta: 21800, precio_m2: 6.00 },
@@ -174,6 +181,7 @@
         const sizeInput = document.getElementById('m-size-input');
         const fixedInput = document.getElementById('m-fixed-input');
 
+        // Actualización de la calculadora interna
         function updateCalc() {
             if(!currentTown) return;
             const p = parseFloat(priceInput.value) || 0;
@@ -181,6 +189,7 @@
             const f = parseFloat(fixedInput.value) || 0;
             const r = s * currentTown.precio_m2;
             const t = r + f;
+            
             document.getElementById('calc-precio-m2').innerText = currentTown.precio_m2.toFixed(2);
             document.getElementById('calc-rent').innerText = Math.round(r) + ' €';
             document.getElementById('calc-total').innerText = Math.round(t) + ' €';
@@ -189,18 +198,23 @@
 
         [priceInput, sizeInput, fixedInput].forEach(inp => inp.addEventListener('input', updateCalc));
 
+        // Renderizado del listado principal
         function renderList() {
             grid.innerHTML = '';
             const minPop = parseInt(popFilter.value);
             const minRent = parseInt(rentFilter.value);
+            
             document.getElementById('pop-val').innerText = minPop.toLocaleString() + ' hab.';
             document.getElementById('rent-val').innerText = minRent.toLocaleString() + ' €';
-            const f = data.filter(item => item.poblacion >= minPop && item.renta >= minRent);
-            townCount.innerText = `${f.length} pueblo${f.length !== 1 ? 's' : ''}`;
             
-            f.sort((a,b) => (b.poblacion/b.clinicas) - (a.poblacion/a.clinicas)).forEach(item => {
+            const filtered = data.filter(item => item.poblacion >= minPop && item.renta >= minRent);
+            townCount.innerText = `${filtered.length} pueblo${filtered.length !== 1 ? 's' : ''}`;
+            
+            // Ordenamos por ratio de mercado (pacientes potenciales por clínica)
+            filtered.sort((a,b) => (b.poblacion/b.clinicas) - (a.poblacion/a.clinicas)).forEach(item => {
                 const ratio = Math.round(item.poblacion / item.clinicas);
                 const sem = ratio >= 10000 ? "🟢" : (ratio >= 5000 ? "🟡" : "🔴");
+                
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.onclick = () => {
@@ -208,8 +222,8 @@
                     document.getElementById('m-title').innerText = `${sem} ${item.municipio}`;
                     document.getElementById('m-ratio-text').innerText = `Población: ${item.poblacion.toLocaleString()} hab. | Ratio 1:${ratio.toLocaleString()}`;
                     
-                    const q = encodeURIComponent(`clínicas de fisioterapia en ${item.municipio}, Sevilla`);
-                    document.getElementById('link-maps').href = `https://www.google.com/maps/search/?api=1&query=${q}&basemap=roadmap`;
+                    const query = encodeURIComponent(`clínicas de fisioterapia en ${item.municipio}, Sevilla`);
+                    document.getElementById('link-maps').href = `https://www.google.com/maps/search/?api=1&query=${query}`;
                     
                     let slug = item.municipio.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '-').replace(/[^\w-]/g, '');
                     document.getElementById('link-idealista').href = `https://www.idealista.com/alquiler-locales/${slug}-sevilla/`;
@@ -218,12 +232,13 @@
                     updateCalc();
                     document.getElementById('detail-modal').classList.add('active');
                 };
+                
                 card.innerHTML = `
                     <div>
                         <div class="card-title">${item.municipio}</div>
                         <div class="card-info">
-                            <b>Población:</b> ${item.poblacion.toLocaleString()} hab.<br>
-                            <b>Ratio:</b> 1:${ratio.toLocaleString()} | <b>Renta:</b> ${item.renta.toLocaleString()}€
+                            <b>Ratio:</b> 1:${ratio.toLocaleString()} | <b>Renta:</b> ${item.renta.toLocaleString()}€<br>
+                            <b>Población:</b> ${item.poblacion.toLocaleString()} hab.
                         </div>
                     </div>
                     <div class="card-score">${sem}</div>
@@ -235,6 +250,7 @@
         popFilter.addEventListener('input', renderList);
         rentFilter.addEventListener('input', renderList);
         document.getElementById('close-modal').onclick = () => document.getElementById('detail-modal').classList.remove('active');
+        
         renderList();
     </script>
 </body>
