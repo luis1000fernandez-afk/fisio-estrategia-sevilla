@@ -1,82 +1,81 @@
-<!DOCTYPE html><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>FisioEstrategia Sevilla</title>
     <style>
-        :root { --p: #10b981; --pd: #059669; --bg: #f8fafc; --t: #1e293b; --tm: #64748b; }
+        :root { --p: #10b981; --pd: #059669; --bg: #f1f5f9; --t: #1e293b; --tm: #64748b; }
         * { box-sizing: border-box; font-family: -apple-system, sans-serif; }
         body { background: var(--bg); color: var(--t); margin: 0; padding-bottom: 40px; }
         
-        .header { background: var(--pd); color: white; padding: 40px 20px 60px; text-align: center; border-radius: 0 0 30px 30px; }
-        .header h1 { margin: 0; font-size: 26px; font-weight: 800; }
+        /* Cabecera */
+        .header { background: var(--pd); color: white; padding: 30px 20px; text-align: center; border-bottom: 4px solid rgba(0,0,0,0.1); }
+        .header h1 { margin: 0; font-size: 24px; font-weight: 800; }
         
-        .main { max-width: 550px; margin: -35px auto 0; padding: 0 15px; }
-        .card { background: white; border-radius: 20px; padding: 20px; border: 1px solid #e2e8f0; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        
-        .filter-label { display: flex; justify-content: space-between; font-weight: 800; font-size: 11px; text-transform: uppercase; margin-bottom: 8px; color: var(--tm); }
-        .val-tag { background: #ecfdf5; color: var(--pd); padding: 2px 8px; border-radius: 6px; font-size: 13px; }
-        input[type=range] { width: 100%; accent-color: var(--p); cursor: pointer; }
-        
-        .list { display: flex; flex-direction: column; gap: 10px; }
-        .item { background: white; border-radius: 15px; padding: 15px; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: 0.2s; }
-        .item:active { background: #f1f5f9; transform: scale(0.98); }
-        .name { font-weight: 800; font-size: 16px; }
-        .info { font-size: 12px; color: var(--tm); }
-        .rank { font-size: 20px; background: #f1f5f9; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 12px; }
+        .main { max-width: 500px; margin: 0 auto; padding: 15px; }
 
-        /* MODAL ESTILO FISIO */
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: flex-end; z-index: 1000; padding: 10px; }
+        /* Filtros: SOLO ARRIBA */
+        .filter-card { background: white; border-radius: 15px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #e2e8f0; }
+        .f-label { display: flex; justify-content: space-between; font-weight: 700; font-size: 12px; text-transform: uppercase; color: var(--tm); margin-bottom: 10px; }
+        .f-val { background: #ecfdf5; color: var(--pd); padding: 2px 8px; border-radius: 5px; }
+        input[type=range] { width: 100%; accent-color: var(--p); margin-bottom: 20px; }
+
+        /* Lista de Pueblos */
+        .list { display: flex; flex-direction: column; gap: 10px; }
+        .item { background: white; border-radius: 12px; padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border: 1px solid #e2e8f0; transition: 0.2s; }
+        .item:active { background: #f8fafc; transform: scale(0.98); }
+        .n { font-weight: 800; font-size: 16px; }
+        .i { font-size: 12px; color: var(--tm); }
+        .r { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; background: #f1f5f9; }
+
+        /* Modal y Calculadora */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 15px; }
         .modal.active { display: flex; }
-        .modal-content { background: white; width: 100%; max-width: 500px; margin: 0 auto; border-radius: 25px; padding: 25px; animation: slideUp 0.3s ease-out; box-shadow: 0 -10px 25px rgba(0,0,0,0.1); }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .modal-content { background: white; width: 100%; max-width: 400px; border-radius: 20px; padding: 20px; position: relative; }
+        .m-h { font-size: 20px; font-weight: 800; margin-bottom: 15px; text-align: center; color: var(--pd); }
         
-        .modal-h { font-size: 24px; font-weight: 800; margin-bottom: 10px; text-align: center; color: var(--t); }
-        .modal-details { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .det-box { background: #f8fafc; padding: 12px; border-radius: 12px; text-align: center; border: 1px solid #e2e8f0; }
-        .det-label { font-size: 10px; text-transform: uppercase; color: var(--tm); font-weight: 700; margin-bottom: 4px; }
-        .det-val { font-size: 16px; font-weight: 800; color: var(--pd); }
-        
-        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .btn { padding: 16px; border-radius: 14px; text-decoration: none; text-align: center; font-weight: 700; font-size: 14px; transition: 0.2s; border: none; }
-        .btn-maps { background: #f1f5f9; color: #1e293b; }
-        .btn-idealista { background: #059669; color: white; }
-        .btn-close { grid-column: span 2; background: #f1f5f9; color: #64748b; margin-top: 10px; cursor: pointer; }
-        .btn:active { opacity: 0.8; transform: scale(0.98); }
+        .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .c-box { background: #f8fafc; padding: 10px; border-radius: 10px; border: 1px solid #e2e8f0; text-align: center; }
+        .c-lbl { font-size: 10px; color: var(--tm); text-transform: uppercase; font-weight: 700; }
+        .c-val { font-size: 14px; font-weight: 800; }
+
+        .btn-link { display: block; text-align: center; padding: 12px; border-radius: 10px; text-decoration: none; font-weight: 700; margin-bottom: 8px; font-size: 14px; }
+        .b-maps { background: #e2e8f0; color: #1e293b; }
+        .b-id { background: var(--pd); color: white; }
+        .b-close { width: 100%; border: none; background: none; color: var(--tm); font-weight: 700; cursor: pointer; padding: 10px; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h1>FisioEstrategia</h1>
-        <p style="opacity: 0.9; font-size: 14px; margin-top: 5px;">Sevilla • Dashboard Pro v4.2</p>
+        <h1>FisioEstrategia Sevilla</h1>
     </div>
 
     <div class="main">
-        <div class="card">
-            <div class="filter-label"><span>Población Mínima</span><span class="val-tag" id="pv">10.000</span></div>
-            <input type="range" id="pf" min="0" max="150000" step="5000" value="10000">
-            <div class="filter-label" style="margin-top:15px;"><span>Renta Mínima</span><span class="val-tag" id="rv">15.000 €</span></div>
+        <div class="filter-card">
+            <div class="f-label"><span>Población Mínima</span><span class="f-val" id="pv">10.000</span></div>
+            <input type="range" id="pf" min="0" max="140000" step="5000" value="10000">
+            
+            <div class="f-label"><span>Renta Mínima</span><span class="f-val" id="rv">15.000 €</span></div>
             <input type="range" id="rf" min="15000" max="40000" step="1000" value="15000">
         </div>
+
         <div id="list" class="list"></div>
     </div>
 
-    <div id="md" class="modal" onclick="if(event.target==this) closeModal()">
+    <div id="md" class="modal" onclick="if(event.target==this) closeM()">
         <div class="modal-content">
-            <div id="mt" class="modal-h"></div>
-            <div class="modal-details">
-                <div class="det-box"><div class="det-label">Población</div><div id="md-p" class="det-val"></div></div>
-                <div class="det-box"><div class="det-label">Clínicas</div><div id="md-c" class="det-val"></div></div>
-                <div class="det-box"><div class="det-label">Renta Media</div><div id="md-r" class="det-val"></div></div>
-                <div class="det-box"><div class="det-label">Ratio Hab/Clínica</div><div id="md-rt" class="det-val"></div></div>
+            <div id="mt" class="m-h"></div>
+            <div class="calc-grid">
+                <div class="c-box"><div class="c-lbl">Población</div><div id="mp" class="c-val"></div></div>
+                <div class="c-box"><div class="c-lbl">Clínicas</div><div id="mc" class="c-val"></div></div>
+                <div class="c-box"><div class="c-lbl">Renta Media</div><div id="mr" class="c-val"></div></div>
+                <div class="c-box"><div class="c-lbl">Ratio Hab/Clín</div><div id="mrt" class="c-val" style="color:var(--pd)"></div></div>
             </div>
-            <div class="btn-grid">
-                <a id="lm" target="_blank" class="btn btn-maps">📍 Google Maps</a>
-                <a id="li" target="_blank" class="btn btn-idealista">🏠 Locales Idealista</a>
-                <button class="btn btn-close" onclick="closeModal()">Volver al listado</button>
-            </div>
+            <a id="bm" target="_blank" class="btn-link b-maps">📍 Ver en Google Maps</a>
+            <a id="bi" target="_blank" class="btn-link b-id">🏠 Buscar Locales en Idealista</a>
+            <button class="b-close" onclick="closeM()">Volver al listado</button>
         </div>
     </div>
 
@@ -85,22 +84,20 @@
             {n:"Dos Hermanas",p:138981,c:16,r:29500},{n:"Alcalá de Guadaíra",p:76547,c:14,r:26800},{n:"Utrera",p:51718,c:4,r:24200},{n:"Mairena del Aljarafe",p:47541,c:18,r:35400},{n:"La Rinconada",p:40162,c:4,r:25900},{n:"Écija",p:39743,c:10,r:23500},{n:"Los Palacios y Villafranca",p:38698,c:3,r:22800},{n:"Coria del Río",p:31000,c:3,r:23100},{n:"Carmona",p:29551,c:2,r:25100},{n:"Lebrija",p:27674,c:2,r:22100},{n:"Camas",p:27444,c:9,r:25400},{n:"Tomares",p:25370,c:18,r:38200},{n:"Mairena del Alcor",p:23700,c:2,r:24500},{n:"Bormujos",p:22780,c:12,r:31500},{n:"San Juan de Aznalfarache",p:22138,c:2,r:24800},{n:"Arahal",p:19500,c:2,r:21500},{n:"Marchena",p:19300,c:2,r:20800},{n:"El Viso del Alcor",p:19200,c:1,r:21800},{n:"Lora del Río",p:18500,c:1,r:21000},{n:"Osuna",p:17500,c:2,r:22500},{n:"Castilleja de la Cuesta",p:17500,c:11,r:28000},{n:"La Algaba",p:16500,c:1,r:22500},{n:"Espartinas",p:16500,c:4,r:36000},{n:"Las Cabezas de San Juan",p:16200,c:2,r:20500},{n:"Sanlúcar la Mayor",p:14100,c:3,r:24500},{n:"Pilas",p:14000,c:1,r:21000},{n:"Guillena",p:13500,c:1,r:23000},{n:"Gines",p:13500,c:6,r:34000},{n:"Brenes",p:12500,c:1,r:20500},{n:"Estepa",p:12400,c:3,r:21000},{n:"Alcalá del Río",p:12200,c:2,r:22000},{n:"Bollullos de la Mitación",p:11100,c:3,r:28000},{n:"La Puebla de Cazalla",p:10900,c:1,r:20000},{n:"Cantillana",p:10700,c:2,r:19500},{n:"Gelves",p:10300,c:2,r:29000}
         ];
 
-        function openModal(item) {
+        function openM(item) {
             const ratio = Math.round(item.p / item.c);
             document.getElementById('mt').innerText = item.n;
-            document.getElementById('md-p').innerText = item.p.toLocaleString();
-            document.getElementById('md-c').innerText = item.c;
-            document.getElementById('md-r').innerText = item.r.toLocaleString() + " €";
-            document.getElementById('md-rt').innerText = "1:" + ratio.toLocaleString();
+            document.getElementById('mp').innerText = item.p.toLocaleString();
+            document.getElementById('mc').innerText = item.c;
+            document.getElementById('mr').innerText = item.r.toLocaleString() + " €";
+            document.getElementById('mrt').innerText = "1:" + ratio.toLocaleString();
             
-            document.getElementById('lm').href = `https://www.google.com/maps/search/fisioterapia+en+${item.n}+Sevilla`;
-            document.getElementById('li').href = `https://www.idealista.com/alquiler-locales/${item.n.toLowerCase().replace(/\s/g, '-')}-sevilla/`;
+            document.getElementById('bm').href = `https://www.google.com/maps/search/clinicas+fisioterapia+en+${item.n}+Sevilla`;
+            document.getElementById('bi').href = `https://www.idealista.com/alquiler-locales/${item.n.toLowerCase().replace(/\s/g, '-')}-sevilla/`;
             document.getElementById('md').classList.add('active');
         }
 
-        function closeModal() {
-            document.getElementById('md').classList.remove('active');
-        }
+        function closeM() { document.getElementById('md').classList.remove('active'); }
 
         function render() {
             const minP = document.getElementById('pf').value;
@@ -118,14 +115,8 @@
                     const emoji = ratio > 10000 ? "🟢" : (ratio > 5000 ? "🟡" : "🔴");
                     const div = document.createElement('div');
                     div.className = 'item';
-                    div.onclick = () => openModal(item);
-                    div.innerHTML = `
-                        <div>
-                            <div class="name">${item.n}</div>
-                            <div class="info">1:${ratio.toLocaleString()} hab/clínica • ${item.p.toLocaleString()} hab.</div>
-                        </div>
-                        <div class="rank">${emoji}</div>
-                    `;
+                    div.onclick = () => openM(item);
+                    div.innerHTML = `<div><div class="n">${item.n}</div><div class="i">Población: ${item.p.toLocaleString()}</div></div><div class="r">${emoji}</div>`;
                     list.appendChild(div);
                 });
         }
@@ -136,45 +127,3 @@
     </script>
 </body>
 </html>
-        .modal-h { font-size: 22px; font-weight: 800; margin-bottom: 5px; text-align: center; }
-        .modal-s { color: var(--tm); text-align: center; margin-bottom: 20px; font-size: 14px; }
-        
-        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .btn { padding: 15px; border-radius: 12px; text-decoration: none; text-align: center; font-weight: 700; font-size: 14px; transition: 0.2s; }
-        .btn-maps { background: #f1f5f9; color: #1e293b; }
-        .btn-idealista { background: #059669; color: white; }
-        .btn-close { grid-column: span 2; background: #fee2e2; color: #dc2626; margin-top: 10px; border: none; cursor: pointer; }
-    </style>
-</head>
-<body>
-
-    <div class="header">
-        <h1>FisioEstrategia</h1>
-        <p style="opacity: 0.9; font-size: 14px; margin-top: 5px;">Sevilla • Dashboard v4.1</p>
-    </div>
-
-    <div class="main">
-        <div class="card">
-            <div class="filter-label"><span>Población Mínima</span><span class="val-tag" id="pv">10.000</span></div>
-            <input type="range" id="pf" min="0" max="100000" step="5000" value="10000">
-            <div class="filter-label" style="margin-top:15px;"><span>Renta Mínima</span><span class="val-tag" id="rv">15.000 €</span></div>
-            <input type="range" id="rf" min="15000" max="40000" step="1000" value="15000">
-        </div>
-        <div id="list"></div>
-    </div>
-
-    <div id="md" class="modal">
-        <div class="modal-content">
-            <div id="mt" class="modal-h"></div>
-            <div id="ms" class="modal-s"></div>
-            <div class="btn-grid">
-                <a id="lm" target="_blank" class="btn btn-maps">📍 Ver en Mapa</a>
-                <a id="li" target="_blank" class="btn btn-idealista">🏠 Buscar Locales</a>
-                <button class="btn btn-close" onclick="closeModal()">Cerrar</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const data = [
-            {n:"Dos Hermanas",p:138981,c:16,r:29500},{n:"Alcalá de Guadaíra",p:76547,c:14,r:26800},{n:"Utrera",p:51718,c:4,r:24200},{n:"Mairena del Aljarafe",p:47541,c:18,r:35400},{n:"La Rinconada",p:40162,c:4,r:25900},{n:"Écija",p:39743,c:10,r:23500},{n:"Los Palacios y Villafranca",p:38698,c:3,r:22800},{n:"Coria del Río",p:31000,c:3,r:23100},{n:"Carmona",p:29551,c:2,r:25100},{n:"Lebrija",p:27674,c:2,r:22100},{n:"Camas",p:27444,c:9,r:25400},{n:"Tomares",p:25370,c:18,r:38200},{n:"Mairena del Alcor",p:23700,c:2,r:24500},{n:"Bormujos",p:22780,c:12,r:31500},{n:"San Juan de Aznalfarache",p:22138,c:2,r:24800},{n:"Arahal",p:19500,c:2,r:21500},{n:"Marchena",p:19300,c:2,r:20800},{n:"El Viso del Alcor",p:19200,c:1,r:21800},{n:"Lora del Río",p:18500,c:1,r:21000},{n:"Osuna",p:17500,c:2,r:22500},{n:"Castilleja de la Cuesta",p:1750
