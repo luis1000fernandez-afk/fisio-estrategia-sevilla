@@ -6,59 +6,143 @@
     <title>FisioEstrategia Sevilla</title>
     <style>
         :root { --p: #10b981; --pd: #059669; --bg: #f8fafc; --t: #1e293b; --tm: #64748b; }
-        * { box-sizing: border-box; font-family: -apple-system, sans-serif; }
-        body { background: var(--bg); color: var(--t); margin: 0; padding-bottom: 40px; }
-        .header { background: var(--pd); color: white; padding: 40px 20px 60px; text-align: center; border-radius: 0 0 30px 30px; }
-        .header h1 { margin: 0; font-size: 26px; font-weight: 800; }
+        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background: var(--bg); color: var(--t); margin: 0; padding-bottom: 40px; line-height: 1.5; }
+        
+        .header { background: var(--pd); color: white; padding: 40px 20px 60px; text-align: center; border-radius: 0 0 30px 30px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .header h1 { margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
+        
         .main { max-width: 550px; margin: -35px auto 0; padding: 0 15px; }
+        
         .card { background: white; border-radius: 20px; padding: 20px; border: 1px solid #e2e8f0; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        
         .filter-label { display: flex; justify-content: space-between; font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; color: var(--tm); }
         .val-tag { background: #ecfdf5; color: var(--pd); padding: 2px 8px; border-radius: 6px; font-size: 13px; }
-        input[type=range] { width: 100%; accent-color: var(--p); cursor: pointer; margin-bottom: 5px; }
+        
+        input[type=range] { width: 100%; height: 6px; background: #e2e8f0; border-radius: 5px; appearance: none; accent-color: var(--p); cursor: pointer; margin-bottom: 5px; }
+        
         .list { display: flex; flex-direction: column; gap: 10px; }
-        .item { background: white; border-radius: 15px; padding: 15px; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: 0.2s; }
+        
+        .item { background: white; border-radius: 15px; padding: 15px; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: transform 0.2s, background 0.2s; }
         .item:active { transform: scale(0.98); background: #f1f5f9; }
-        .name { font-weight: 800; font-size: 16px; margin-bottom: 2px; }
-        .info { font-size: 12px; color: var(--tm); }
-        .rank { font-size: 20px; background: #f1f5f9; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 12px; }
+        
+        .name { font-weight: 800; font-size: 16px; margin-bottom: 2px; color: var(--t); }
+        .info { font-size: 12px; color: var(--tm); font-weight: 500; }
+        
+        .rank { font-size: 20px; background: #f1f5f9; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 12px; border: 1px solid #e2e8f0; }
+        
+        .badge-renta { font-size: 10px; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; margin-left: 5px; color: var(--tm); }
     </style>
 </head>
 <body>
+
     <div class="header">
         <h1>FisioEstrategia</h1>
-        <p style="opacity: 0.9; font-size: 14px; margin-top: 5px;">Sevilla • Dashboard v4.0</p>
+        <p style="opacity: 0.9; font-size: 14px; margin-top: 5px; font-weight: 500;">Sevilla • Análisis de Mercado v4.0</p>
     </div>
+
     <div class="main">
         <div class="card">
-            <div class="filter-label"><span>Población Mínima</span><span class="val-tag" id="pv">10.000</span></div>
+            <div class="filter-label">
+                <span>Población Mínima</span>
+                <span class="val-tag" id="pv">10.000</span>
+            </div>
             <input type="range" id="pf" min="0" max="100000" step="5000" value="10000">
-            <div class="filter-label" style="margin-top:15px;"><span>Renta Mínima</span><span class="val-tag" id="rv">15.000 €</span></div>
+
+            <div class="filter-label" style="margin-top:20px;">
+                <span>Renta Media Mínima</span>
+                <span class="val-tag" id="rv">15.000 €</span>
+            </div>
             <input type="range" id="rf" min="15000" max="40000" step="1000" value="15000">
         </div>
+
         <div id="list" class="list"></div>
     </div>
+
     <script>
+        // Datos reales de los 35 municipios principales de Sevilla
         const data = [
-            {n:"Dos Hermanas",p:138981,c:16,r:29500},{n:"Alcalá Guadaíra",p:76547,c:14,r:26800},{n:"Utrera",p:51718,c:4,r:24200},{n:"Mairena Aljarafe",p:47541,c:18,r:35400},{n:"La Rinconada",p:40162,c:4,r:25900},{n:"Écija",p:39743,c:10,r:23500},{n:"Los Palacios",p:38698,c:3,r:22800},{n:"Coria del Río",p:31000,c:3,r:23100},{n:"Carmona",p:29551,c:2,r:25100},{n:"Lebrija",p:27674,c:2,r:22100},{n:"Camas",p:27444,c:9,r:25400},{n:"Tomares",p:25370,c:18,r:38200},{n:"Mairena Alcor",p:23700,c:2,r:24500},{n:"Bormujos",p:22780,c:12,r:31500},{n:"San Juan Aznal.",p:22138,c:2,r:24800},{n:"Arahal",p:19500,c:2,r:21500},{n:"Marchena",p:19300,c:2,r:20800},{n:"El Viso Alcor",p:19200,c:1,r:21800},{n:"Lora del Río",p:18500,c:1,r:21000},{n:"Osuna",p:17500,c:2,r:22500},{n:"Castilleja Cuesta",p:17500,c:11,r:28000},{n:"La Algaba",p:16500,c:1,r:22500},{n:"Espartinas",p:16500,c:4,r:36000},{n:"Las Cabezas",p:16200,c:2,r:20500},{n:"Sanlúcar la Mayor",p:14100,c:3,r:24500},{n:"Pilas",p:14000,c:1,r:21000},{n:"Guillena",p:13500,c:1,r:23000},{n:"Gines",p:13500,c:6,r:34000},{n:"Brenes",p:12500,c:1,r:20500},{n:"Estepa",p:12400,c:3,r:21000},{n:"Alcalá del Río",p:12200,c:2,r:22000},{n:"Bollullos Mitación",p:11100,c:3,r:28000},{n:"Puebla Cazalla",p:10900,c:1,r:20000},{n:"Cantillana",p:10700,c:2,r:19500},{n:"Gelves",p:10300,c:2,r:29000}
+            {n:"Dos Hermanas",p:138981,c:16,r:29500},
+            {n:"Alcalá de Guadaíra",p:76547,c:14,r:26800},
+            {n:"Utrera",p:51718,c:4,r:24200},
+            {n:"Mairena del Aljarafe",p:47541,c:18,r:35400},
+            {n:"La Rinconada",p:40162,c:4,r:25900},
+            {n:"Écija",p:39743,c:10,r:23500},
+            {n:"Los Palacios y Villafranca",p:38698,c:3,r:22800},
+            {n:"Coria del Río",p:31000,c:3,r:23100},
+            {n:"Carmona",p:29551,c:2,r:25100},
+            {n:"Lebrija",p:27674,c:2,r:22100},
+            {n:"Camas",p:27444,c:9,r:25400},
+            {n:"Tomares",p:25370,c:18,r:38200},
+            {n:"Mairena del Alcor",p:23700,c:2,r:24500},
+            {n:"Bormujos",p:22780,c:12,r:31500},
+            {n:"San Juan de Aznalfarache",p:22138,c:2,r:24800},
+            {n:"Arahal",p:19500,c:2,r:21500},
+            {n:"Marchena",p:19300,c:2,r:20800},
+            {n:"El Viso del Alcor",p:19200,c:1,r:21800},
+            {n:"Lora del Río",p:18500,c:1,r:21000},
+            {n:"Osuna",p:17500,c:2,r:22500},
+            {n:"Castilleja de la Cuesta",p:17500,c:11,r:28000},
+            {n:"La Algaba",p:16500,c:1,r:22500},
+            {n:"Espartinas",p:16500,c:4,r:36000},
+            {n:"Las Cabezas de San Juan",p:16200,c:2,r:20500},
+            {n:"Sanlúcar la Mayor",p:14100,c:3,r:24500},
+            {n:"Pilas",p:14000,c:1,r:21000},
+            {n:"Guillena",p:13500,c:1,r:23000},
+            {n:"Gines",p:13500,c:6,r:34000},
+            {n:"Brenes",p:12500,c:1,r:20500},
+            {n:"Estepa",p:12400,c:3,r:21000},
+            {n:"Alcalá del Río",p:12200,c:2,r:22000},
+            {n:"Bollullos de la Mitación",p:11100,c:3,r:28000},
+            {n:"La Puebla de Cazalla",p:10900,c:1,r:20000},
+            {n:"Cantillana",p:10700,c:2,r:19500},
+            {n:"Gelves",p:10300,c:2,r:29000}
         ];
+
         function render() {
             const minP = document.getElementById('pf').value;
             const minR = document.getElementById('rf').value;
+            
+            // Actualizar etiquetas de los filtros
             document.getElementById('pv').innerText = parseInt(minP).toLocaleString();
             document.getElementById('rv').innerText = parseInt(minR).toLocaleString() + ' €';
+            
             const list = document.getElementById('list');
             list.innerHTML = '';
+            
+            // Filtrar, ordenar por ratio y mostrar
             data.filter(d => d.p >= minP && d.r >= minR)
                 .sort((a,b) => (b.p/b.c) - (a.p/a.c))
                 .forEach(item => {
-                    const ratio = Math.round(item.p/item.c);
-                    const emoji = ratio > 10000 ? "🟢" : (ratio > 5000 ? "🟡" : "🔴");
-                    list.innerHTML += `<div class="item"><div><div class="name">${item.n}</div><div class="info">1:${ratio.toLocaleString()} hab/clínica • Renta: ${item.r.toLocaleString()}€</div></div><div class="rank">${emoji}</div></div>`;
+                    const ratio = Math.round(item.p / item.c);
+                    
+                    // Lógica de semáforo
+                    let emoji = "🔴";
+                    if (ratio > 10000) emoji = "🟢";
+                    else if (ratio > 5000) emoji = "🟡";
+
+                    const div = document.createElement('div');
+                    div.className = 'item';
+                    div.innerHTML = `
+                        <div>
+                            <div class="name">${item.n}</div>
+                            <div class="info">
+                                1:${ratio.toLocaleString()} hab/clínica 
+                                <span class="badge-renta">${item.r.toLocaleString()}€</span>
+                            </div>
+                        </div>
+                        <div class="rank">${emoji}</div>
+                    `;
+                    list.appendChild(div);
                 });
         }
+
+        // Listeners para los sliders
         document.getElementById('pf').oninput = render;
         document.getElementById('rf').oninput = render;
-        render();
+
+        // Carga inicial
+        window.onload = render;
     </script>
 </body>
 </html>
