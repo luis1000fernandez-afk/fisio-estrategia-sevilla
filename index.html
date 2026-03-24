@@ -12,7 +12,7 @@
         .header h1 { margin: 0; font-size: 22px; font-weight: 900; }
         .main { max-width: 500px; margin: 0 auto; padding: 15px; }
 
-        /* Filtros Superiores */
+        /* Filtros */
         .filter-card { background: white; border-radius: 15px; padding: 15px; margin-bottom: 20px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
         .f-label { display: flex; justify-content: space-between; font-weight: 800; font-size: 11px; text-transform: uppercase; color: var(--tm); margin-bottom: 8px; }
         .f-val { background: #ecfdf5; color: var(--pd); padding: 2px 8px; border-radius: 6px; }
@@ -29,24 +29,27 @@
         /* MODAL CALCULADORA */
         .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 15px; overflow-y: auto; }
         .modal.active { display: flex; }
-        .modal-content { background: white; width: 100%; max-width: 450px; border-radius: 20px; padding: 20px; position: relative; }
+        .modal-content { background: white; width: 100%; max-width: 450px; border-radius: 20px; padding: 20px; }
         .m-h { font-size: 20px; font-weight: 900; margin-bottom: 15px; text-align: center; color: var(--pd); border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
         
-        /* Grid de Inputs Calculadora */
+        /* Grid Calculadora Editable */
         .calc-box { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-        .in-group { background: #f8fafc; padding: 8px; border-radius: 10px; border: 1px solid #e2e8f0; }
-        .in-group label { display: block; font-size: 9px; font-weight: 800; color: var(--tm); text-transform: uppercase; margin-bottom: 4px; }
-        .in-group input { width: 100%; border: none; background: transparent; font-size: 15px; font-weight: 800; color: var(--t); outline: none; }
+        .in-group { background: #f1f5f9; padding: 10px; border-radius: 10px; border: 1px solid #e2e8f0; }
+        .in-group label { display: block; font-size: 10px; font-weight: 800; color: var(--tm); text-transform: uppercase; margin-bottom: 6px; }
         
-        /* Resultado */
+        /* Estilo para que parezcan campos editables */
+        .in-group input { width: 100%; border: 2px solid #cbd5e1; border-radius: 6px; padding: 6px; background: white; font-size: 16px; font-weight: 800; color: var(--t); outline: none; transition: 0.2s; text-align: center; }
+        .in-group input:focus { border-color: var(--p); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2); }
+        
         .res-box { background: var(--t); color: white; padding: 15px; border-radius: 12px; text-align: center; margin-bottom: 15px; }
-        .res-val { font-size: 24px; font-weight: 900; color: var(--p); }
-        .res-lbl { font-size: 11px; opacity: 0.8; text-transform: uppercase; font-weight: 700; }
+        .res-val { font-size: 26px; font-weight: 900; color: var(--p); margin-top: 5px; }
 
-        .btn-link { display: block; text-align: center; padding: 12px; border-radius: 10px; text-decoration: none; font-weight: 700; margin-bottom: 8px; font-size: 13px; border: none; cursor: pointer; }
+        /* Botones de acción */
+        .btn-link { display: block; text-align: center; padding: 14px; border-radius: 10px; text-decoration: none; font-weight: 800; margin-bottom: 8px; font-size: 14px; transition: 0.2s; }
+        .btn-link:active { transform: scale(0.98); }
         .b-maps { background: #e2e8f0; color: #1e293b; }
         .b-id { background: var(--pd); color: white; }
-        .b-close { width: 100%; border: none; background: none; color: #ef4444; font-weight: 800; cursor: pointer; padding: 10px; text-transform: uppercase; font-size: 12px; }
+        .b-close { width: 100%; border: none; background: none; color: #ef4444; font-weight: 800; cursor: pointer; padding: 12px; text-transform: uppercase; font-size: 12px; margin-top: 5px;}
     </style>
 </head>
 <body>
@@ -72,28 +75,29 @@
             <div id="mt" class="m-h"></div>
             
             <div class="calc-box">
+                <div class="in-group" style="background:#fee2e2; border-color:#fca5a5;"><label style="color:#dc2626">Clínicas Actuales</label><div id="m-clinicas" style="font-weight:900; font-size:18px; color:#b91c1c; text-align:center;"></div></div>
+                <div class="in-group" style="background:#ecfdf5; border-color:#6ee7b7;"><label style="color:var(--pd)">Ratio Hab/Clínica</label><div id="m-ratio" style="font-weight:900; font-size:18px; color:var(--pd); text-align:center;"></div></div>
+                
                 <div class="in-group"><label>Precio Sesión (€)</label><input type="number" id="c-pre" value="45" oninput="calc()"></div>
                 <div class="in-group"><label>Sesiones / Mes</label><input type="number" id="c-ses" value="80" oninput="calc()"></div>
-                <div class="in-group"><label>Alquiler Local</label><input type="number" id="c-alq" value="600" oninput="calc()"></div>
-                <div class="in-group"><label>Otros Gastos</label><input type="number" id="c-gas" value="300" oninput="calc()"></div>
-                <div class="in-group"><label>Autónomo (€)</label><input type="number" id="c-aut" value="300" oninput="calc()"></div>
-                <div class="in-group" style="background:#ecfdf5"><label>Ratio Local</label><div id="m-ratio" style="font-weight:800; font-size:14px; color:var(--pd)"></div></div>
+                <div class="in-group"><label>Alquiler Local (€)</label><input type="number" id="c-alq" value="600" oninput="calc()"></div>
+                <div class="in-group"><label>Autónomo + Gastos</label><input type="number" id="c-gas" value="600" oninput="calc()"></div>
             </div>
 
             <div class="res-box">
-                <div class="res-lbl">Beneficio Neto Mensual Est.</div>
+                <div style="font-size:11px; opacity:0.8; text-transform:uppercase; font-weight:800; letter-spacing: 0.5px;">Beneficio Neto Mensual Estimado</div>
                 <div id="res-total" class="res-val">0 €</div>
             </div>
 
-            <a id="bm" target="_blank" class="btn-link b-maps">📍 Ver Clínicas en Mapa</a>
-            <a id="bi" target="_blank" class="btn-link b-id">🏠 Buscar Locales en Idealista</a>
-            <button class="b-close" onclick="closeM()">Cerrar Calculadora</button>
+            <a id="bm" target="_blank" class="btn-link b-maps">📍 Ver Competencia en Mapa</a>
+            <a id="bi" target="_blank" class="btn-link b-id">🏠 Buscar Locales (Idealista)</a>
+            <button class="b-close" onclick="closeM()">Volver al Listado</button>
         </div>
     </div>
 
     <script>
         const data = [
-            {n:"Dos Hermanas",p:138981,c:16,r:29500},{n:"Alcalá de Guadaíra",p:76547,c:14,r:26800},{n:"Utrera",p:51718,c:4,r:24200},{n:"Mairena del Aljarafe",p:47541,c:18,r:35400},{n:"La Rinconada",p:40162,c:4,r:25900},{n:"Écija",p:39743,c:10,r:23500},{n:"Los Palacios y Villafranca",p:38698,c:3,r:22800},{n:"Coria del Río",p:31000,c:3,r:23100},{n:"Carmona",p:29551,c:2,r:25100},{n:"Lebrija",p:27674,c:2,r:22100},{n:"Camas",p:27444,c:9,r:25400},{n:"Tomares",p:25370,c:18,r:38200},{n:"Mairena del Alcor",p:23700,c:2,r:24500},{n:"Bormujos",p:22780,c:12,r:31500},{n:"San Juan de Aznalfarache",p:22138,c:2,r:24800},{n:"Arahal",p:19500,c:2,r:21500},{n:"Marchena",p:19300,c:2,r:20800},{n:"El Viso del Alcor",p:19200,c:1,r:21800},{n:"Lora del Río",p:18500,c:1,r:21000},{n:"Osuna",p:17500,c:2,r:22500},{n:"Castilleja de la Cuesta",p:17500,c:11,r:28000},{n:"La Algaba",p:16500,c:1,r:22500},{n:"Espartinas",p:16500,c:4,r:36000},{n:"Las Cabezas de San Juan",p:16200,c:2,r:20500},{n:"Sanlúcar la Mayor",p:14100,c:3,r:24500},{n:"Pilas",p:14000,c:1,r:21000},{n:"Guillena",p:13500,c:1,r:23000},{n:"Gines",p:13500,c:6,r:34000},{n:"Brenes",p:12500,c:1,r:20500},{n:"Estepa",p:12400,c:3,r:21000},{n:"Alcalá del Río",p:12200,c:2,r:22000},{n:"Bollullos de la Mitación",p:11100,c:3,r:28000},{n:"La Puebla de Cazalla",p:10900,c:1,r:20000},{n:"Cantillana",p:10700,c:2,r:19500},{n:"Gelves",p:10300,c:2,r:29000}
+            {n:"Dos Hermanas",p:138981,c:16,r:29500},{n:"Alcalá de Guadaíra",p:76547,c:14,r:26800},{n:"Utrera",p:51718,c:4,r:24200},{n:"Mairena del Aljarafe",p:47541,c:18,r:35400},{n:"La Rinconada",p:40162,c:4,r:25900},{n:"Écija",p:39743,c:10,r:23500},{n:"Los Palacios y Villafranca",p:38698,c:3,r:22800},{n:"Coria del Río",p:31000,c:3,r:23100},{n:"Morón de la Frontera",p:27280,c:3,r:21500},{n:"Carmona",p:29551,c:2,r:25100},{n:"Lebrija",p:27674,c:2,r:22100},{n:"Camas",p:27444,c:9,r:25400},{n:"Tomares",p:25370,c:18,r:38200},{n:"Mairena del Alcor",p:23700,c:2,r:24500},{n:"Bormujos",p:22780,c:12,r:31500},{n:"San Juan de Aznalfarache",p:22138,c:2,r:24800},{n:"Arahal",p:19500,c:2,r:21500},{n:"Marchena",p:19300,c:2,r:20800},{n:"El Viso del Alcor",p:19200,c:1,r:21800},{n:"Lora del Río",p:18500,c:1,r:21000},{n:"Osuna",p:17500,c:2,r:22500},{n:"Castilleja de la Cuesta",p:17500,c:11,r:28000},{n:"La Algaba",p:16500,c:1,r:22500},{n:"Espartinas",p:16500,c:4,r:36000},{n:"Las Cabezas de San Juan",p:16200,c:2,r:20500},{n:"Sanlúcar la Mayor",p:14100,c:3,r:24500},{n:"Pilas",p:14000,c:1,r:21000},{n:"Guillena",p:13500,c:1,r:23000},{n:"Gines",p:13500,c:6,r:34000},{n:"Brenes",p:12500,c:1,r:20500},{n:"Estepa",p:12400,c:3,r:21000},{n:"Alcalá del Río",p:12200,c:2,r:22000},{n:"Bollullos de la Mitación",p:11100,c:3,r:28000},{n:"La Puebla de Cazalla",p:10900,c:1,r:20000},{n:"Cantillana",p:10700,c:2,r:19500},{n:"Gelves",p:10300,c:2,r:29000}
         ];
 
         function calc() {
@@ -101,24 +105,30 @@
             const ses = parseFloat(document.getElementById('c-ses').value) || 0;
             const alq = parseFloat(document.getElementById('c-alq').value) || 0;
             const gas = parseFloat(document.getElementById('c-gas').value) || 0;
-            const aut = parseFloat(document.getElementById('c-aut').value) || 0;
-            const total = (pre * ses) - alq - gas - aut;
+            
+            const total = (pre * ses) - alq - gas;
             document.getElementById('res-total').innerText = total.toLocaleString() + " €";
-            document.getElementById('res-total').style.color = total > 0 ? "#10b981" : "#ef4444";
+            document.getElementById('res-total').style.color = total >= 0 ? "#10b981" : "#f87171";
         }
 
         function openM(item) {
             const ratio = Math.round(item.p / item.c);
             document.getElementById('mt').innerText = item.n.toUpperCase();
+            
+            // Datos fijos de competencia
+            document.getElementById('m-clinicas').innerText = item.c;
             document.getElementById('m-ratio').innerText = "1:" + ratio.toLocaleString();
             
-            // Corrección de enlaces
+            // Enlace inteligente a Google Maps (Búsqueda específica de competencia)
+            const mapQuery = encodeURIComponent(`clinica fisioterapia en ${item.n} Sevilla`);
+            document.getElementById('bm').href = `https://www.google.com/maps/search/${mapQuery}/`;
+            
+            // Enlace inteligente a Idealista
             const cleanName = item.n.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '-');
-            document.getElementById('bm').href = `https://www.google.com/maps/search/clinica+fisioterapia+en+${item.n}+Sevilla`;
             document.getElementById('bi').href = `https://www.idealista.com/alquiler-locales/${cleanName}-sevilla/`;
             
             document.getElementById('md').classList.add('active');
-            calc();
+            calc(); // Ejecuta la calculadora al abrir
         }
 
         function closeM() { document.getElementById('md').classList.remove('active'); }
@@ -130,6 +140,7 @@
             document.getElementById('rv').innerText = parseInt(minR).toLocaleString() + ' €';
             const list = document.getElementById('list');
             list.innerHTML = '';
+            
             data.filter(d => d.p >= minP && d.r >= minR).sort((a,b) => (b.p/b.c) - (a.p/a.c)).forEach(item => {
                 const ratio = Math.round(item.p/item.c);
                 const emoji = ratio > 10000 ? "🟢" : (ratio > 5000 ? "🟡" : "🔴");
