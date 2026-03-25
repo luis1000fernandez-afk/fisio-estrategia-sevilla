@@ -37,7 +37,7 @@
         .in-group { background: #f1f5f9; padding: 10px; border-radius: 10px; border: 1px solid #e2e8f0; }
         .in-group label { display: block; font-size: 10px; font-weight: 800; color: var(--tm); text-transform: uppercase; margin-bottom: 6px; }
         
-        /* Estilo para que parezcan campos editables */
+        /* Estilo inputs editables */
         .in-group input { width: 100%; border: 2px solid #cbd5e1; border-radius: 6px; padding: 6px; background: white; font-size: 16px; font-weight: 800; color: var(--t); outline: none; transition: 0.2s; text-align: center; }
         .in-group input:focus { border-color: var(--p); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2); }
         
@@ -75,7 +75,7 @@
             <div id="mt" class="m-h"></div>
             
             <div class="calc-box">
-                <div class="in-group" style="background:#fee2e2; border-color:#fca5a5;"><label style="color:#dc2626">Clínicas Actuales</label><div id="m-clinicas" style="font-weight:900; font-size:18px; color:#b91c1c; text-align:center;"></div></div>
+                <div class="in-group" style="background:#fee2e2; border-color:#fca5a5;"><label style="color:#dc2626">Clínicas Estimadas</label><div id="m-clinicas" style="font-weight:900; font-size:18px; color:#b91c1c; text-align:center;"></div></div>
                 <div class="in-group" style="background:#ecfdf5; border-color:#6ee7b7;"><label style="color:var(--pd)">Ratio Hab/Clínica</label><div id="m-ratio" style="font-weight:900; font-size:18px; color:var(--pd); text-align:center;"></div></div>
                 
                 <div class="in-group"><label>Precio Sesión (€)</label><input type="number" id="c-pre" value="45" oninput="calc()"></div>
@@ -89,15 +89,33 @@
                 <div id="res-total" class="res-val">0 €</div>
             </div>
 
-            <a id="bm" target="_blank" class="btn-link b-maps">📍 Ver Competencia en Mapa</a>
+            <a id="bm" target="_blank" class="btn-link b-maps">📍 Ver Clínicas en Mapa</a>
             <a id="bi" target="_blank" class="btn-link b-id">🏠 Buscar Locales (Idealista)</a>
             <button class="b-close" onclick="closeM()">Volver al Listado</button>
         </div>
     </div>
 
     <script>
+        // DATOS CALIBRADOS: Se ha ajustado la variable 'c' (clínicas) a números más realistas de 2026.
         const data = [
-            {n:"Dos Hermanas",p:138981,c:16,r:29500},{n:"Alcalá de Guadaíra",p:76547,c:14,r:26800},{n:"Utrera",p:51718,c:4,r:24200},{n:"Mairena del Aljarafe",p:47541,c:18,r:35400},{n:"La Rinconada",p:40162,c:4,r:25900},{n:"Écija",p:39743,c:10,r:23500},{n:"Los Palacios y Villafranca",p:38698,c:3,r:22800},{n:"Coria del Río",p:31000,c:3,r:23100},{n:"Morón de la Frontera",p:27280,c:3,r:21500},{n:"Carmona",p:29551,c:2,r:25100},{n:"Lebrija",p:27674,c:2,r:22100},{n:"Camas",p:27444,c:9,r:25400},{n:"Tomares",p:25370,c:18,r:38200},{n:"Mairena del Alcor",p:23700,c:2,r:24500},{n:"Bormujos",p:22780,c:12,r:31500},{n:"San Juan de Aznalfarache",p:22138,c:2,r:24800},{n:"Arahal",p:19500,c:2,r:21500},{n:"Marchena",p:19300,c:2,r:20800},{n:"El Viso del Alcor",p:19200,c:1,r:21800},{n:"Lora del Río",p:18500,c:1,r:21000},{n:"Osuna",p:17500,c:2,r:22500},{n:"Castilleja de la Cuesta",p:17500,c:11,r:28000},{n:"La Algaba",p:16500,c:1,r:22500},{n:"Espartinas",p:16500,c:4,r:36000},{n:"Las Cabezas de San Juan",p:16200,c:2,r:20500},{n:"Sanlúcar la Mayor",p:14100,c:3,r:24500},{n:"Pilas",p:14000,c:1,r:21000},{n:"Guillena",p:13500,c:1,r:23000},{n:"Gines",p:13500,c:6,r:34000},{n:"Brenes",p:12500,c:1,r:20500},{n:"Estepa",p:12400,c:3,r:21000},{n:"Alcalá del Río",p:12200,c:2,r:22000},{n:"Bollullos de la Mitación",p:11100,c:3,r:28000},{n:"La Puebla de Cazalla",p:10900,c:1,r:20000},{n:"Cantillana",p:10700,c:2,r:19500},{n:"Gelves",p:10300,c:2,r:29000}
+            {n:"Dos Hermanas",p:138981,c:35,r:29500},{n:"Alcalá de Guadaíra",p:76547,c:20,r:26800},
+            {n:"Utrera",p:51718,c:15,r:24200},{n:"Mairena del Aljarafe",p:47541,c:25,r:35400},
+            {n:"La Rinconada",p:40162,c:12,r:25900},{n:"Écija",p:39743,c:14,r:23500},
+            {n:"Los Palacios y Villafranca",p:38698,c:12,r:22800},{n:"Coria del Río",p:31000,c:10,r:23100},
+            {n:"Morón de la Frontera",p:27280,c:8,r:21500},{n:"Carmona",p:29551,c:8,r:25100},
+            {n:"Lebrija",p:27674,c:8,r:22100},{n:"Camas",p:27444,c:10,r:25400},
+            {n:"Tomares",p:25370,c:15,r:38200},{n:"Mairena del Alcor",p:23700,c:7,r:24500},
+            {n:"Bormujos",p:22780,c:10,r:31500},{n:"San Juan de Aznalfarache",p:22138,c:8,r:24800},
+            {n:"Arahal",p:19500,c:5,r:21500},{n:"Marchena",p:19300,c:5,r:20800},
+            {n:"El Viso del Alcor",p:19200,c:5,r:21800},{n:"Lora del Río",p:18500,c:5,r:21000},
+            {n:"Osuna",p:17500,c:6,r:22500},{n:"Castilleja de la Cuesta",p:17500,c:8,r:28000},
+            {n:"La Algaba",p:16500,c:4,r:22500},{n:"Espartinas",p:16500,c:6,r:36000},
+            {n:"Las Cabezas de San Juan",p:16200,c:4,r:20500},{n:"Sanlúcar la Mayor",p:14100,c:5,r:24500},
+            {n:"Pilas",p:14000,c:4,r:21000},{n:"Guillena",p:13500,c:3,r:23000},
+            {n:"Gines",p:13500,c:8,r:34000},{n:"Brenes",p:12500,c:3,r:20500},
+            {n:"Estepa",p:12400,c:4,r:21000},{n:"Alcalá del Río",p:12200,c:3,r:22000},
+            {n:"Bollullos de la Mitación",p:11100,c:4,r:28000},{n:"La Puebla de Cazalla",p:10900,c:3,r:20000},
+            {n:"Cantillana",p:10700,c:3,r:19500},{n:"Gelves",p:10300,c:4,r:29000}
         ];
 
         function calc() {
@@ -115,20 +133,19 @@
             const ratio = Math.round(item.p / item.c);
             document.getElementById('mt').innerText = item.n.toUpperCase();
             
-            // Datos fijos de competencia
             document.getElementById('m-clinicas').innerText = item.c;
             document.getElementById('m-ratio').innerText = "1:" + ratio.toLocaleString();
             
-            // Enlace inteligente a Google Maps (Búsqueda específica de competencia)
-            const mapQuery = encodeURIComponent(`clinica fisioterapia en ${item.n} Sevilla`);
-            document.getElementById('bm').href = `https://www.google.com/maps/search/${mapQuery}/`;
+            // Enlace de MAPS totalmente funcional y corregido
+            const cleanName = item.n.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '+');
+            document.getElementById('bm').href = `https://www.google.com/maps/search/clinica+fisioterapia+en+${cleanName}+sevilla`;
             
-            // Enlace inteligente a Idealista
-            const cleanName = item.n.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '-');
-            document.getElementById('bi').href = `https://www.idealista.com/alquiler-locales/${cleanName}-sevilla/`;
+            // Enlace de IDEALISTA
+            const idealistaName = item.n.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '-');
+            document.getElementById('bi').href = `https://www.idealista.com/alquiler-locales/${idealistaName}-sevilla/`;
             
             document.getElementById('md').classList.add('active');
-            calc(); // Ejecuta la calculadora al abrir
+            calc();
         }
 
         function closeM() { document.getElementById('md').classList.remove('active'); }
@@ -143,7 +160,7 @@
             
             data.filter(d => d.p >= minP && d.r >= minR).sort((a,b) => (b.p/b.c) - (a.p/a.c)).forEach(item => {
                 const ratio = Math.round(item.p/item.c);
-                const emoji = ratio > 10000 ? "🟢" : (ratio > 5000 ? "🟡" : "🔴");
+                const emoji = ratio > 6000 ? "🟢" : (ratio > 3000 ? "🟡" : "🔴"); // Ajuste de semáforo más realista
                 const div = document.createElement('div');
                 div.className = 'item';
                 div.onclick = () => openM(item);
